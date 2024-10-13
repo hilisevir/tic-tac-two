@@ -8,8 +8,7 @@ public class ConfigRepository
     [
         new GameConfiguration()
         {
-            Name = "Classical",
-            GridColor = "Blue"
+            Name = "Classical"
 
         },
 

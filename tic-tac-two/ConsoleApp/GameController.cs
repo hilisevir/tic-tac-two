@@ -22,28 +22,38 @@ public static class GameController
     
         var gameInstance = new TicTacTwoBrain(chosenConfig);
         var gridConstruct = new SlidingGrid(chosenConfig);
-    
         
-
 
         do
         {
-            Console.WriteLine("Choose initial grid position by providing coordinates <x,y>");
-            var gridPosition = Console.ReadLine();
-            var coordinatesGrid = gridPosition.Split(',');
-            
-            gridConstruct.GridCenterY = int.Parse(coordinatesGrid[0]);
-            gridConstruct.GridCenterX = int.Parse(coordinatesGrid[1]);
+            bool flag;
+            do
+            {
+                
+                Console.Write("Choose initial grid position by providing coordinates <x,y>:");
+                var gridPosition = Console.ReadLine()!;
+                flag = gameInstance.PlaceGrid(gridConstruct, gridPosition);
+            } while (flag); // TODO get rid of do while and true/false
+            do
+            {
+                
+                Console.Write("Choose initial grid position by providing coordinates <x,y>:");
+                var gridPosition = Console.ReadLine()!;
+                flag = gameInstance.PlaceGrid(gridConstruct, gridPosition);
+            } while (flag);
             
             ConsoleUI.Visualizer.DrawBoard(gameInstance, gridConstruct);
             
-            Console.Write("Give me coordinates <x,y>:");
-            var coordinates = Console.ReadLine()!;
-            var coordinateSplit = coordinates.Split(',');
-            var inputX = int.Parse(coordinateSplit[0]);
-            var inputY = int.Parse(coordinateSplit[1]);
-            gameInstance.MakeAMove(inputX, inputY);
+            do
+            {
+                
+                Console.Write("Give me coordinates <x,y>:");
+                var coordinates = Console.ReadLine()!;
+                flag = gameInstance.MakeAMove(coordinates);
+                
+            } while (flag);
             
+
         } while (true);
     
         // loop
@@ -53,7 +63,7 @@ public static class GameController
         return "";
     }
 
-    private  static string ChooseConfiguration()
+    private static string ChooseConfiguration()
     {
         var configMenuItems = new List<MenuItem>();
 
@@ -72,4 +82,7 @@ public static class GameController
 
         return configMenu.Run();
     }
+    
+    
+    
 }

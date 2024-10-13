@@ -6,8 +6,8 @@ public class SlidingGrid
     private int _gridHeight;
     private int _gridWidth;
     private string _gridColor;
-    public int GridCenterX { get; set; } = 2;
-    public int GridCenterY { get; set; } = 2;
+    public int GridCenterX { get; set; } = 3;
+    public int GridCenterY { get; set; } = 3;
 
     // Pass GameConfiguration as a parameter
     public SlidingGrid(GameConfiguration gameConfiguration)
@@ -23,12 +23,64 @@ public class SlidingGrid
         int halfHeight = _gridHeight / 2;
         int halfWidth = _gridWidth / 2;
 
-        int startRow = Math.Max(GridCenterX - halfHeight, 0);
-        int endRow = Math.Min(GridCenterX + halfHeight, _gameConfiguration.BoardSizeWidth - 1);
-        int startCol = Math.Max(GridCenterY - halfWidth, 0);
-        int endCol = Math.Min(GridCenterY + halfWidth, _gameConfiguration.BoardSizeHeight - 1);
+        int startRow = GridCenterX - halfHeight;
+        int endRow = GridCenterX + halfHeight;
+        int startCol = GridCenterY - halfWidth;
+        int endCol = GridCenterY + halfWidth;
 
         return (startRow, endRow, startCol, endCol);
     }
+    public void MoveRight()
+    {
+        if (GridCenterX + 1 < _gameConfiguration.BoardSizeWidth - 1)
+        {
+            GridCenterX++;
+        }
+        else
+        {
+            Console.WriteLine("Cannot move right, at the boundary!");
+        }
+    }
+
+    // Method to move the window left
+    public void MoveLeft()
+    {
+        if (GridCenterX - 1 >= 0)
+        {
+            GridCenterX--;
+        }
+        else
+        {
+            Console.WriteLine("Cannot move left, at the boundary!");
+        }
+    }
+
+    // Method to move the window up
+    public void MoveUp()
+    {
+        if (GridCenterY - 1 >= 0)
+        {
+            GridCenterY--;
+        }
+        else
+        {
+            Console.WriteLine("Cannot move up, at the boundary!");
+        }
+    }
+
+    // Method to move the window down
+    public void MoveDown()
+    {
+        if (GridCenterY + 1 < _gameConfiguration.BoardSizeHeight - 1)
+        {
+            GridCenterY++;
+        }
+        else
+        {
+            Console.WriteLine("Cannot move down, at the boundary!");
+        }
+    }
+
+    
     
 }

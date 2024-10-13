@@ -39,18 +39,58 @@ public class TicTacTwoBrain
         return copyOffBoard;
     }
 
-    public bool MakeAMove(int x, int y)
+    public bool MakeAMove(string coordinates)
     {
+        var coordinateSplit = coordinates.Split(',');
 
-        if (_gameBoard[x, y] != EGamePiece.Empty)
+        if (!CheckCoordinates(coordinateSplit)) return true;
+        
+        var inputX = int.Parse(coordinateSplit[0]);
+        var inputY = int.Parse(coordinateSplit[1]);
+        
+        try
         {
-            return false;
+            if (_gameBoard[inputX, inputY] != EGamePiece.Empty) return true;
         }
-
-        _gameBoard[x, y] = _nextMoveBy;
+        
+        catch (IndexOutOfRangeException e)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Piece were placed out of border bounds. Please try again.");
+            Console.WriteLine();
+            Console.ResetColor();
+            return true;
+        }
+        
+        _gameBoard[inputX, inputY] = _nextMoveBy;
         // flip the next piece
         _nextMoveBy = _nextMoveBy == EGamePiece.X ? EGamePiece.O : EGamePiece.X;
-        return true;
+        return false;
+    }
+    
+    public bool PlaceGrid(SlidingGrid gridConstruct, string userInput)
+    {
+        var coordinatesGrid = userInput.Split(',');
+
+        if (!CheckCoordinates(coordinatesGrid)) return true;
+        
+        
+        gridConstruct.GridCenterX = int.Parse(coordinatesGrid[0]);
+        gridConstruct.GridCenterY = int.Parse(coordinatesGrid[1]);
+        
+        var (startRow, endRow, startCol, endCol) = gridConstruct.GetGridBounds();
+        if (!(startRow >= 0 && endRow <= _gameConfiguration.BoardSizeWidth - 1 &&
+              startCol >= 0 && endCol <= _gameConfiguration.BoardSizeHeight - 1))
+        {
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Invalid coordinates. Grid is out if board bounds!");
+            Console.WriteLine();
+            Console.ResetColor();
+            return true;
+        }
+        return false;
+
     }
 
     public void ResetGame()
@@ -58,5 +98,20 @@ public class TicTacTwoBrain
         var copyOffBoard = new EGamePiece[_gameBoard.GetLength(0), _gameBoard.GetLength(1)];
         _nextMoveBy = EGamePiece.X;
         
+    }
+
+    private static bool CheckCoordinates(string[] coordinates)
+    {
+        if (coordinates.Length != 2 || !int.TryParse(coordinates[0], out var x)
+                                        || !int.TryParse(coordinates[1], out var y))
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"Invalid input: '{string.Join(',', coordinates)}'. Please try again. " +
+                              $"Coordinates should be in format x,y");
+            Console.WriteLine();
+            Console.ResetColor();
+            return false;
+        }
+        return true;
     }
 }
