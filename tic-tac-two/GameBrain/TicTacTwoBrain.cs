@@ -3,9 +3,11 @@
 public class TicTacTwoBrain
 {
     private EGamePiece[,] _gameBoard;
+    
     private EGamePiece _nextMoveBy { get; set; } = EGamePiece.X;
 
     private GameConfiguration _gameConfiguration;
+    private SlidingGrid _slidingGrid;
     
     public TicTacTwoBrain(GameConfiguration gameConfiguration)
     {

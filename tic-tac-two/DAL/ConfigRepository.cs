@@ -9,6 +9,7 @@ public class ConfigRepository
         new GameConfiguration()
         {
             Name = "Classical",
+            GridColor = "Blue"
 
         },
 
@@ -20,7 +21,8 @@ public class ConfigRepository
             BoardSizeHeight = 5,
             GridSizeHeight = 3,
             GridSizeWidth = 3,
-            WinCondition = 3
+            WinCondition = 3,
+            GridColor = "Red"
 
         },
 

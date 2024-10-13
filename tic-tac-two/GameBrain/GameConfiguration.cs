@@ -10,7 +10,7 @@ public record struct GameConfiguration()
     public int GridSizeWidth { get; set; } = 3;
     public int GridSizeHeight { get; set; } = 3;
     
-    public string GridColor { get; set; } = default!;
+    public string GridColor { get; set; } = "Red";
     
     // how many
     public int WinCondition { get; set; } = 3;

@@ -10,7 +10,6 @@ public static class GameController
     public static string MainLoop()
     {
         var chosenConfigShortcut = ChooseConfiguration();
-        
 
         if (!int.TryParse(chosenConfigShortcut, out var configNo))
         {
@@ -22,13 +21,21 @@ public static class GameController
         );
     
         var gameInstance = new TicTacTwoBrain(chosenConfig);
+        var gridConstruct = new SlidingGrid(chosenConfig);
     
         
 
 
         do
         {
-            ConsoleUI.Visualizer.DrawBoard(gameInstance);
+            Console.WriteLine("Choose initial grid position by providing coordinates <x,y>");
+            var gridPosition = Console.ReadLine();
+            var coordinatesGrid = gridPosition.Split(',');
+            
+            gridConstruct.GridCenterY = int.Parse(coordinatesGrid[0]);
+            gridConstruct.GridCenterX = int.Parse(coordinatesGrid[1]);
+            
+            ConsoleUI.Visualizer.DrawBoard(gameInstance, gridConstruct);
             
             Console.Write("Give me coordinates <x,y>:");
             var coordinates = Console.ReadLine()!;
