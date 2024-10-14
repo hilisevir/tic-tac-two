@@ -23,36 +23,20 @@ public static class GameController
         var gameInstance = new TicTacTwoBrain(chosenConfig);
         var gridConstruct = new SlidingGrid(chosenConfig);
         
-
+        gameInstance.PlaceAGrid(gridConstruct);
+        var counter = 0;
         do
         {
-            bool flag;
-            do
-            {
-                
-                Console.Write("Choose initial grid position by providing coordinates <x,y>:");
-                var gridPosition = Console.ReadLine()!;
-                flag = gameInstance.PlaceGrid(gridConstruct, gridPosition);
-            } while (flag); // TODO get rid of do while and true/false
-            do
-            {
-                
-                Console.Write("Choose initial grid position by providing coordinates <x,y>:");
-                var gridPosition = Console.ReadLine()!;
-                flag = gameInstance.PlaceGrid(gridConstruct, gridPosition);
-            } while (flag);
             
             ConsoleUI.Visualizer.DrawBoard(gameInstance, gridConstruct);
-            
-            do
+            if (counter >= 2)
             {
-                
-                Console.Write("Give me coordinates <x,y>:");
-                var coordinates = Console.ReadLine()!;
-                flag = gameInstance.MakeAMove(coordinates);
-                
-            } while (flag);
-            
+                Console.WriteLine("What would you like to do next?");
+                Console.WriteLine();
+                gameInstance.MoveAGrid(gridConstruct);
+            }
+            gameInstance.MakeAMove();
+            counter++;
 
         } while (true);
     

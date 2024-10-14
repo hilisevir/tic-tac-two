@@ -5,17 +5,17 @@ namespace ConsoleUI;
 
 public static class Visualizer
 {
-    public static void DrawBoard(TicTacTwoBrain gameInstance, SlidingGrid gridBounds)
+    public static void DrawBoard(TicTacTwoBrain gameInstance, SlidingGrid gridInstance)
     {
-
-        var (startRow, endRow, startCol, endCol) = gridBounds.GetGridBounds();
         
         for (var y = 0; y < gameInstance.DimY; y++)
         {
             for (var x = 0; x < gameInstance.DimX; x++)
             {
                 
-                if (x >= startRow && x <= endRow - 1 && y >= startCol && y <= endCol)
+                if (x >= gridInstance.StartRow && x <= gridInstance.EndRow - 1
+                                               && y >= gridInstance.StartCol
+                                               && y <= gridInstance.EndCol)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                 } else
@@ -34,7 +34,9 @@ public static class Visualizer
             {
                 for (var x = 0; x < gameInstance.DimX; x++)
                 {
-                    if (x >= startRow && x <= endRow && y >= startCol && y <= endCol - 1)
+                    if (x >= gridInstance.StartRow && x <= gridInstance.EndRow 
+                                                   && y >= gridInstance.StartCol 
+                                                   && y <= gridInstance.EndCol - 1)
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
                     } else
@@ -43,7 +45,7 @@ public static class Visualizer
                     }
                     Console.Write("---");
                     if (x == gameInstance.DimX - 1) continue;
-                    if (x == endRow)
+                    if (x == gridInstance.EndRow)
                     {
                         Console.ForegroundColor = ConsoleColor.Gray;
                     }
