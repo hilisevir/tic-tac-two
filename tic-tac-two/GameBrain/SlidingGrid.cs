@@ -6,8 +6,8 @@ public class SlidingGrid
     private readonly int _gridHeight;
     private readonly int _gridWidth;
     private string _gridColor;
-    public int GridCenterX { get; set; } = 2;
-    public int GridCenterY { get; set; } = 2;
+    public int GridCenterX { get; set; }
+    public int GridCenterY { get; set; }
 
     public int StartRow { get; private set; }
     public int EndRow { get; private set; }
@@ -37,7 +37,10 @@ public class SlidingGrid
     {
         if (EndRow + 1 <= _gameConfiguration.BoardSizeWidth - 1)
         {
+            Console.WriteLine(GridCenterX);
             GridCenterX++;
+            Console.WriteLine(GridCenterX);
+            GetGridBounds();
         }
         else
         {
@@ -51,6 +54,7 @@ public class SlidingGrid
         if (StartRow - 1 >= 0)
         {
             GridCenterX--;
+            GetGridBounds();
         }
         else
         {
@@ -64,6 +68,7 @@ public class SlidingGrid
         if (StartCol - 1 >= 0)
         {
             GridCenterY--;
+            GetGridBounds();
         }
         else
         {
@@ -77,6 +82,7 @@ public class SlidingGrid
         if (GridCenterY + 1 <= _gameConfiguration.BoardSizeHeight - 1)
         {
             GridCenterY++;
+            GetGridBounds();
         }
         else
         {
@@ -88,6 +94,7 @@ public class SlidingGrid
         if (StartRow - 1 >= 0 && StartCol - 1 >= 0)
         {
             GridCenterY++;
+            GetGridBounds();
         }
         else
         {
@@ -99,6 +106,7 @@ public class SlidingGrid
         if (EndRow + 1 <= _gameConfiguration.BoardSizeWidth - 1 && StartCol - 1 >= 0)
         {
             GridCenterY++;
+            GetGridBounds();
         }
         else
         {
@@ -110,6 +118,7 @@ public class SlidingGrid
         if (GridCenterY + 1 <= _gameConfiguration.BoardSizeHeight - 1 && StartRow - 1 >= 0)
         {
             GridCenterY++;
+            GetGridBounds();
         }
         else
         {
@@ -122,6 +131,7 @@ public class SlidingGrid
             && StartRow + 1 <= _gameConfiguration.BoardSizeWidth - 1)
         {
             GridCenterY++;
+            GetGridBounds();
         }
         else
         {

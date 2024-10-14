@@ -36,7 +36,8 @@ public static class Menus
         new MenuItem()
         {
             Shortcut = "O",
-            Title = "Options"
+            Title = "Options",
+            MenuItemAction = DummyMethod
         }
     ]);
 

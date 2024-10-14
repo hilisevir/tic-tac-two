@@ -126,9 +126,10 @@ public class TicTacTwoBrain
             }
             try
             {
-                switch (userInput)
+                switch (userInput.ToUpper())
                 {
                     case ("R"):
+                        Console.WriteLine("Here");
                         gridConstruct.MoveRight();
                         break;
                     case ("L"):
@@ -184,7 +185,7 @@ public class TicTacTwoBrain
         
         string[] commands = ["R", "L", "U", "D", "UR", "UL", "DR", "DL"];
         
-        return commands.Contains(command);
+        return commands.Contains(command.ToUpper());
 
     }
     
