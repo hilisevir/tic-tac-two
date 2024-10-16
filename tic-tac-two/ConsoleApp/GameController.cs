@@ -28,7 +28,7 @@ public static class GameController
         var counter = 0;
         do
         {
-            Console.Clear();
+            // Console.Clear();
             ConsoleUI.Visualizer.DrawBoard(gameInstance, gridConstruct);
             if (counter >= 2)
             {
@@ -52,7 +52,6 @@ public static class GameController
     private static string ChooseConfiguration()
     {
         var configMenuItems = new List<MenuItem>();
-
         for (var i = 0; i < ConfigRepository.GetConfigurationNames().Count; i++)
         {
             var returnValue = i.ToString();
@@ -68,4 +67,5 @@ public static class GameController
 
         return configMenu.Run();
     }
+    
 }

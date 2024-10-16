@@ -21,7 +21,9 @@ public class ConfigRepository
             GridSizeHeight = 3,
             GridSizeWidth = 3,
             WinCondition = 3,
-            GridColor = "Red"
+            GridColor = "Red",
+            Player1Pieces = [EGamePiece.X, EGamePiece.X, EGamePiece.X, EGamePiece.X, EGamePiece.X],
+            Player2Pieces = [EGamePiece.O, EGamePiece.O, EGamePiece.O, EGamePiece.O, EGamePiece.O]
 
         },
 
@@ -34,7 +36,9 @@ public class ConfigRepository
             GridSizeHeight = 6,
             GridSizeWidth = 6,
             WinCondition = 4,
-            MovePieceAfterNMoves = 3
+            MovePieceAfterNMoves = 2,
+            Player1Pieces = [EGamePiece.X, EGamePiece.X, EGamePiece.X, EGamePiece.X, EGamePiece.X, EGamePiece.X, EGamePiece.X],
+            Player2Pieces = [EGamePiece.O, EGamePiece.O, EGamePiece.O, EGamePiece.O, EGamePiece.O, EGamePiece.O, EGamePiece.O],
 
         }
     ];

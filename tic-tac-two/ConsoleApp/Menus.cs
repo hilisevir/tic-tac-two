@@ -41,7 +41,7 @@ public static class Menus
     ]);
 
     public static Menu GameMenu => new Menu(
-        EMenuLevel.Deep,
+        EMenuLevel.InGame,
         "TIC_TAC_TWO", [
             new MenuItem()
             {

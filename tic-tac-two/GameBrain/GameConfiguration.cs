@@ -15,7 +15,10 @@ public record struct GameConfiguration()
     // how many
     public int WinCondition { get; set; } = 3;
     // 0 disabled
-    public int MovePieceAfterNMoves { get; set; } = 0;
+    public int MovePieceAfterNMoves { get; set; } = 2;
+    
+    public List<EGamePiece> Player1Pieces { get; set; } = [EGamePiece.X, EGamePiece.X, EGamePiece.X, EGamePiece.X];
+    public List<EGamePiece> Player2Pieces { get; set; } = [EGamePiece.O, EGamePiece.O, EGamePiece.O, EGamePiece.O];
 
     public override string ToString() => $"Board size: {BoardSizeWidth}x{BoardSizeHeight}, " +
                                          $"grid size: {GridSizeWidth}x{GridSizeHeight}, to win: {WinCondition}, " + 
