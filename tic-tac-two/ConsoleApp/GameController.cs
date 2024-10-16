@@ -19,23 +19,25 @@ public static class GameController
         var chosenConfig = ConfigRepository.GetConfigurationByName(
             ConfigRepository.GetConfigurationNames()[configNo]
         );
-    
-        var gameInstance = new TicTacTwoBrain(chosenConfig);
+        
         var gridConstruct = new SlidingGrid(chosenConfig);
+        var gameInstance = new TicTacTwoBrain(chosenConfig, gridConstruct);
         
         gameInstance.PlaceAGrid(gridConstruct);
+        
         var counter = 0;
         do
         {
-            
+            Console.Clear();
             ConsoleUI.Visualizer.DrawBoard(gameInstance, gridConstruct);
             if (counter >= 2)
             {
-                Console.WriteLine("What would you like to do next?");
-                Console.WriteLine();
-                gameInstance.MoveAGrid(gridConstruct);
+                Menus.GameMenu.Run();
             }
-            gameInstance.MakeAMove();
+            else
+            {
+                TicTacTwoBrain.MakeAMove();
+            }
             counter++;
 
         } while (true);
@@ -66,7 +68,4 @@ public static class GameController
 
         return configMenu.Run();
     }
-    
-    
-    
 }

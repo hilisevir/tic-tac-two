@@ -7,7 +7,6 @@ public static class Visualizer
 {
     public static void DrawBoard(TicTacTwoBrain gameInstance, SlidingGrid gridInstance)
     {
-        
         for (var y = 0; y < gameInstance.DimY; y++)
         {
             for (var x = 0; x < gameInstance.DimX; x++)
@@ -56,6 +55,7 @@ public static class Visualizer
             }
             
         }
+        Console.WriteLine();
         Console.ResetColor();
     }
 

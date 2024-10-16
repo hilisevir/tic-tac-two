@@ -2,16 +2,18 @@
 
 public class TicTacTwoBrain
 {
-    private EGamePiece[,] _gameBoard;
+    private static EGamePiece[,] _gameBoard;
     
-    private EGamePiece _nextMoveBy { get; set; } = EGamePiece.X;
+    private static EGamePiece _nextMoveBy { get; set; } = EGamePiece.X;
 
     private readonly GameConfiguration _gameConfiguration;
+    private static SlidingGrid _slidingGrid;
     
-    public TicTacTwoBrain(GameConfiguration gameConfiguration)
+    public TicTacTwoBrain(GameConfiguration gameConfiguration, SlidingGrid slidingGrid)
     {
         _gameConfiguration = gameConfiguration;
         _gameBoard = new EGamePiece[_gameConfiguration.BoardSizeHeight, _gameConfiguration.BoardSizeWidth];
+        _slidingGrid = slidingGrid;
     }
     
     
@@ -38,7 +40,7 @@ public class TicTacTwoBrain
         return copyOffBoard;
     }
 
-    public void MakeAMove()
+    public static string MakeAMove()
     {
         do
         {
@@ -55,20 +57,14 @@ public class TicTacTwoBrain
             {
                 if (_gameBoard[inputX, inputY] != EGamePiece.Empty)
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("This place is already occupied. Choose another one.");
-                    Console.WriteLine();
-                    Console.ResetColor();
+                    ThrowError("This place is already occupied. Choose another one.");
                     continue;
                 }
             }
 
             catch (IndexOutOfRangeException e)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Piece were placed out of border bounds. Please try again.");
-                Console.WriteLine();
-                Console.ResetColor();
+                ThrowError("Piece were placed out of border bounds. Please try again.");
                 continue;
             }
             _gameBoard[inputX, inputY] = _nextMoveBy;
@@ -77,6 +73,8 @@ public class TicTacTwoBrain
             break;
             
         } while (true);
+
+        return "E";
     }
     
     public void PlaceAGrid(SlidingGrid gridInstance)
@@ -97,11 +95,7 @@ public class TicTacTwoBrain
             if (!(gridInstance.StartRow >= 0 && gridInstance.EndRow <= _gameConfiguration.BoardSizeWidth - 1 &&
                   gridInstance.StartCol >= 0 && gridInstance.EndRow <= _gameConfiguration.BoardSizeHeight - 1))
             {
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Invalid coordinates. Grid is out if board bounds!");
-                Console.WriteLine();
-                Console.ResetColor();
+                ThrowError("Invalid coordinates. Grid is out if board bounds!");
                 continue;
             }
             break;
@@ -109,7 +103,7 @@ public class TicTacTwoBrain
 
     }
 
-    public void MoveAGrid(SlidingGrid gridConstruct)
+    public static string MoveAGrid()
     {
         do
         {
@@ -117,11 +111,7 @@ public class TicTacTwoBrain
             var userInput = Console.ReadLine();
             if (!CheckMoveCommand(userInput))
             {
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"Invalid command: '{userInput}'. Please try again.");
-                Console.WriteLine();
-                Console.ResetColor();
+                ThrowError($"Invalid command: '{userInput}'. Please try again.");
                 continue;
             }
             try
@@ -129,38 +119,39 @@ public class TicTacTwoBrain
                 switch (userInput.ToUpper())
                 {
                     case ("R"):
-                        Console.WriteLine("Here");
-                        gridConstruct.MoveRight();
+                        _slidingGrid.MoveRight();
                         break;
                     case ("L"):
-                        gridConstruct.MoveLeft();
+                        _slidingGrid.MoveLeft();
                         break;
                     case ("U"):
-                        gridConstruct.MoveUp();
+                        _slidingGrid.MoveUp();
                         break;
                     case ("D"):
-                        gridConstruct.MoveDown();
+                        _slidingGrid.MoveDown();
                         break;
                     case ("UR"):
-                        gridConstruct.MoveUpRight();
+                        _slidingGrid.MoveUpRight();
                         break;
                     case ("UL"):
-                        gridConstruct.MoveUpLeft();
+                        _slidingGrid.MoveUpLeft();
                         break;
                     case ("DR"):
-                        gridConstruct.MoveDownRight();
+                        _slidingGrid.MoveDownRight();
                         break;
                     case ("DL"):
-                        gridConstruct.MoveDownLeft();
+                        _slidingGrid.MoveDownLeft();
                         break;
                 }
                 break;
             }
             catch (IndexOutOfRangeException e)
             {
-                Console.WriteLine(e);
+                Console.WriteLine(e.Message);
             }
-        } while (true) ;
+        } while (true);
+        _nextMoveBy = _nextMoveBy == EGamePiece.X ? EGamePiece.O : EGamePiece.X;
+        return "E";
     }
     
 
@@ -169,17 +160,33 @@ public class TicTacTwoBrain
         if (coordinates.Length != 2 || !int.TryParse(coordinates[0], out var x)
                                         || !int.TryParse(coordinates[1], out var y))
         {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"Invalid input: '{string.Join(',', coordinates)}'. Please try again. " +
-                              $"Coordinates should be in format x,y");
-            Console.WriteLine();
-            Console.ResetColor();
+            ThrowError($"Invalid input: '{string.Join(',', coordinates)}'. Please try again. " +
+                       $"Coordinates should be in format x,y");
             return false;
         }
         return true;
     }
 
-    private bool CheckMoveCommand(string? command)
+    private static bool CheckIfPieceInGrid(string[] coordinates)
+    {
+        if(!CheckCoordinates(coordinates)) return false;
+        
+        var inputX = int.Parse(coordinates[0]);
+        var inputY = int.Parse(coordinates[1]);
+
+        if (_slidingGrid.StartRow <= inputX && _slidingGrid.EndRow >= inputX
+                                            && _slidingGrid.StartCol <= inputY && _slidingGrid.EndCol >= inputY)
+        {
+            return true;
+        }
+        
+        ThrowError($"Invalid input: '{string.Join(',', coordinates)}'. Please try again. " +
+                   $"You can't take or place a piece out of bounds of the grid.");
+        
+        return false;
+    }
+
+    private static bool CheckMoveCommand(string? command)
     {
         if (command == null) return false;
         
@@ -188,11 +195,72 @@ public class TicTacTwoBrain
         return commands.Contains(command.ToUpper());
 
     }
+
+    public static string ChangePiecePosition()
+    {
+        do
+        {
+            Console.WriteLine();
+            Console.WriteLine("You can move one of your pieces that are in the grid to another place in the grid!");
+            Console.WriteLine();
+            Console.Write("Enter your piece position that you would like to move <x,y>: ");
+            var userInput  = Console.ReadLine();
+            var pieceCor = userInput.Split(',');
+            
+            if(!CheckIfPieceInGrid(pieceCor)) continue;
+            
+            var inputX = int.Parse(pieceCor[0]);
+            var inputY = int.Parse(pieceCor[1]);
+            EGamePiece pieceToMove;
+
+            if (_gameBoard[inputX, inputY] == _nextMoveBy)
+            {
+                pieceToMove = _gameBoard[inputX, inputY];
+            }else
+            {
+                ThrowError($"You can move only your pieces that are in the grid! Your chose was: {_gameBoard[inputX, inputY]}");
+                continue;
+            }
+            
+            Console.Write("Enter new position <x,y> for the piece you want to move: ");
+            var newPos = Console.ReadLine();
+            pieceCor = newPos.Split(',');
+            
+            if(!CheckIfPieceInGrid(pieceCor)) continue;
+            
+            var inputNewX = int.Parse(pieceCor[0]);
+            var inputNewY = int.Parse(pieceCor[1]);
+            
+            if (_gameBoard[inputNewX, inputNewY] != EGamePiece.Empty)
+            {
+                ThrowError($"You can place a piece only on empty cells. Your chose was: {_gameBoard[inputNewX, inputNewY]}");
+                continue;
+            }
+            
+            
+            _gameBoard[inputX, inputY] = EGamePiece.Empty;
+            _gameBoard[inputNewX, inputNewY] = pieceToMove;
+                
+            
+            _nextMoveBy = _nextMoveBy == EGamePiece.X ? EGamePiece.O : EGamePiece.X;
+            return "E";
+            
+        } while (true);
+    }
     
     public void ResetGame()
     {
         var copyOffBoard = new EGamePiece[_gameBoard.GetLength(0), _gameBoard.GetLength(1)];
         _nextMoveBy = EGamePiece.X;
         
+    }
+
+    private static void ThrowError(string message)
+    {
+        Console.WriteLine();
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine(message);
+        Console.WriteLine();
+        Console.ResetColor();
     }
 }

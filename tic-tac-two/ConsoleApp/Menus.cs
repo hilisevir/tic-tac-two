@@ -1,18 +1,17 @@
-﻿using MenuSystem;
+﻿using GameBrain;
+using MenuSystem;
 
 namespace ConsoleApp;
 
 public static class Menus
 {
-    public static Menu OptionsMenu => 
-    new Menu(
+    public static Menu OptionsMenu => new Menu(
         EMenuLevel.Secondary,
         "TIC-TAC-TWO", [
-        
         new MenuItem()
         {
-            Shortcut = "X",
-            Title = "X starts",
+            Shortcut = "C",
+            Title = "Create New Game Configuration",
             MenuItemAction = DummyMethod
         },
         new MenuItem()
@@ -37,9 +36,33 @@ public static class Menus
         {
             Shortcut = "O",
             Title = "Options",
-            MenuItemAction = DummyMethod
+            MenuItemAction = OptionsRun
         }
     ]);
+
+    public static Menu GameMenu => new Menu(
+        EMenuLevel.Deep,
+        "TIC_TAC_TWO", [
+            new MenuItem()
+            {
+                Shortcut = "G",
+                Title = "Move Grid",
+                MenuItemAction = TicTacTwoBrain.MoveAGrid
+            },
+            new MenuItem()
+            {
+                Shortcut = "P",
+                Title = "Place Piece",
+                MenuItemAction = TicTacTwoBrain.MakeAMove
+            },
+            new MenuItem()
+            {
+                Shortcut = "C",
+                Title = "Change Position for Piece",
+                MenuItemAction = TicTacTwoBrain.ChangePiecePosition
+            }
+        ]);
+    
 
     public static string DummyMethod()
     {
@@ -47,4 +70,12 @@ public static class Menus
         Console.ReadKey();
         return "foobar";
     }
+
+    public static string OptionsRun()
+    {
+        OptionsMenu.Run();
+        return "R";
+    }
+    
+    
 }

@@ -4,7 +4,7 @@ public class Menu
 {
     private string MenuHeader { get; set; }
     private static string _menuDivider = "================";
-    public List<MenuItem> MenuItems { get; set; }
+    public static List<MenuItem> MenuItems { get; set; }
 
     private MenuItem _menuItemExit = new MenuItem()
     {
@@ -62,7 +62,8 @@ public class Menu
 
     public string Run()
     {
-        Console.Clear();
+        Console.WriteLine();
+        // Console.Clear();
 
         do
         {
@@ -71,7 +72,7 @@ public class Menu
             
             if (menuItem.MenuItemAction != null)
             {
-                menuReturnValue = menuItem.MenuItemAction!();
+                menuReturnValue = menuItem.MenuItemAction();
             }
 
             if (menuItem.Shortcut == _menuItemReturn.Shortcut)
@@ -85,7 +86,7 @@ public class Menu
             if ((menuItem.Shortcut == _menuItemReturnMain.Shortcut || menuReturnValue == _menuItemReturnMain.Shortcut)
                 && _menuLevel != EMenuLevel.Main)
             {
-                return menuItem.Shortcut;
+                return _menuItemReturnMain.Shortcut;
             }
 
             if (!string.IsNullOrEmpty(menuReturnValue))

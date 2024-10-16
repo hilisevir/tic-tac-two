@@ -27,6 +27,7 @@ public class SlidingGrid
     {
         var halfHeight = _gridHeight / 2;
         var halfWidth = _gridWidth / 2;
+        // TODO fix issue with even grid
 
         StartRow = GridCenterX - halfHeight;
         EndRow = GridCenterX + halfHeight;
@@ -37,9 +38,7 @@ public class SlidingGrid
     {
         if (EndRow + 1 <= _gameConfiguration.BoardSizeWidth - 1)
         {
-            Console.WriteLine(GridCenterX);
             GridCenterX++;
-            Console.WriteLine(GridCenterX);
             GetGridBounds();
         }
         else
@@ -79,7 +78,7 @@ public class SlidingGrid
     // Method to move the window down
     public void MoveDown()
     {
-        if (GridCenterY + 1 <= _gameConfiguration.BoardSizeHeight - 1)
+        if (EndCol + 1 <= _gameConfiguration.BoardSizeHeight - 1)
         {
             GridCenterY++;
             GetGridBounds();
@@ -93,7 +92,8 @@ public class SlidingGrid
     {
         if (StartRow - 1 >= 0 && StartCol - 1 >= 0)
         {
-            GridCenterY++;
+            GridCenterY--;
+            GridCenterX--;
             GetGridBounds();
         }
         else
@@ -105,7 +105,8 @@ public class SlidingGrid
     {
         if (EndRow + 1 <= _gameConfiguration.BoardSizeWidth - 1 && StartCol - 1 >= 0)
         {
-            GridCenterY++;
+            GridCenterY--;
+            GridCenterX++;
             GetGridBounds();
         }
         else
@@ -115,9 +116,10 @@ public class SlidingGrid
         
     }public void MoveDownLeft()
     {
-        if (GridCenterY + 1 <= _gameConfiguration.BoardSizeHeight - 1 && StartRow - 1 >= 0)
+        if (EndCol + 1 <= _gameConfiguration.BoardSizeHeight - 1 && StartRow - 1 >= 0)
         {
             GridCenterY++;
+            GridCenterX--;
             GetGridBounds();
         }
         else
@@ -127,10 +129,11 @@ public class SlidingGrid
         
     }public void MoveDownRight()
     {
-        if (GridCenterY + 1 <= _gameConfiguration.BoardSizeHeight - 1
+        if (EndCol + 1 <= _gameConfiguration.BoardSizeHeight - 1
             && StartRow + 1 <= _gameConfiguration.BoardSizeWidth - 1)
         {
             GridCenterY++;
+            GridCenterX++;
             GetGridBounds();
         }
         else
