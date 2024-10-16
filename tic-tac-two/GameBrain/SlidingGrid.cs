@@ -27,12 +27,12 @@ public class SlidingGrid
     {
         var halfHeight = _gridHeight / 2;
         var halfWidth = _gridWidth / 2;
-        // TODO fix issue with even grid
 
-        StartRow = GridCenterX - halfHeight;
-        EndRow = GridCenterX + halfHeight;
-        StartCol = GridCenterY - halfWidth;
-        EndCol = GridCenterY + halfWidth;
+        StartRow = GridCenterX - halfWidth;
+        EndRow = _gridHeight % 2 == 0 ? GridCenterX + halfHeight - 1 : GridCenterX + halfHeight;
+
+        StartCol = GridCenterY - halfHeight;
+        EndCol = _gridWidth % 2 == 0 ? GridCenterY + halfWidth - 1 : GridCenterY + halfWidth;
     }
     public void MoveRight()
     {

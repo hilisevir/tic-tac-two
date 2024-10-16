@@ -46,19 +46,19 @@ public static class Menus
             new MenuItem()
             {
                 Shortcut = "G",
-                Title = "Move Grid",
+                Title = "Move a Grid",
                 MenuItemAction = TicTacTwoBrain.MoveAGrid
             },
             new MenuItem()
             {
                 Shortcut = "P",
-                Title = "Place Piece",
+                Title = "Place a Piece",
                 MenuItemAction = TicTacTwoBrain.MakeAMove
             },
             new MenuItem()
             {
                 Shortcut = "C",
-                Title = "Change Position for Piece",
+                Title = "Change Position for the Piece",
                 MenuItemAction = TicTacTwoBrain.ChangePiecePosition
             }
         ]);

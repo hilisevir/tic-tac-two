@@ -16,10 +16,10 @@ public class ConfigRepository
         {
             // data for this game is taken from options
             Name = "Custom",
-            BoardSizeWidth = 5,
-            BoardSizeHeight = 5,
-            GridSizeHeight = 3,
-            GridSizeWidth = 3,
+            BoardSizeWidth = 10,
+            BoardSizeHeight = 10,
+            GridSizeHeight = 5,
+            GridSizeWidth = 5,
             WinCondition = 3,
             GridColor = "Red",
             Player1Pieces = [EGamePiece.X, EGamePiece.X, EGamePiece.X, EGamePiece.X, EGamePiece.X],
@@ -31,8 +31,8 @@ public class ConfigRepository
         {
             // one of the game alternative
             Name = "Big 10x10",
-            BoardSizeWidth = 10,
-            BoardSizeHeight = 10,
+            BoardSizeWidth = 11,
+            BoardSizeHeight = 11,
             GridSizeHeight = 6,
             GridSizeWidth = 6,
             WinCondition = 4,

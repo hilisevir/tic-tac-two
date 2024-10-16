@@ -58,7 +58,7 @@ public static class Visualizer
         }
         Console.WriteLine();
         Console.ResetColor();
-        Console.WriteLine("Player1                       Player2");
+        Console.WriteLine("Player1                 Player2");
         Console.WriteLine($"{string.Join(' ', TicTacTwoBrain.Player1PieceAmount)}"
                           + "                       "
                           + $"{string.Join(' ', TicTacTwoBrain.Player2PieceAmount)}");

@@ -16,7 +16,7 @@ public class TicTacTwoBrain
         _gameConfiguration = gameConfiguration;
         Player1PieceAmount = _gameConfiguration.Player1Pieces;
         Player2PieceAmount = _gameConfiguration.Player2Pieces;
-        _gameBoard = new EGamePiece[_gameConfiguration.BoardSizeHeight, _gameConfiguration.BoardSizeWidth];
+        _gameBoard = new EGamePiece[_gameConfiguration.BoardSizeWidth, _gameConfiguration.BoardSizeHeight];
         _slidingGrid = slidingGrid;
     }
     
@@ -44,7 +44,79 @@ public class TicTacTwoBrain
         return copyOffBoard;
     }
 
-    // Allows user place one of the pieces that still in their hand
+
+   public static bool CheckWinCondition(EGamePiece gamePiece)
+{
+    int count = 0;
+    // Check horizontal
+    for (int y = _slidingGrid.StartCol; y < _slidingGrid.EndCol + 1; y++)
+    {
+        count = 0;
+        for (int x = _slidingGrid.StartRow; x < _slidingGrid.EndRow + 1; x++)
+        {
+            if (_gameBoard[x, y] == gamePiece)
+            {
+                count++;
+                if (count >= _gameConfiguration.WinCondition)
+                {
+                    return true; // Win found
+                }
+            }
+            else
+            {
+                count = 0; // Reset count if the sequence breaks
+            }
+        }
+    }
+
+    // Check vertical
+    for (int x = _slidingGrid.StartRow; x < _slidingGrid.EndRow + 1; x++)
+    {
+        count = 0;
+        for (int y = _slidingGrid.StartCol; y < _slidingGrid.EndCol + 1; y++)
+        {
+            if (_gameBoard[x, y] == gamePiece)
+            {
+                count++;
+                if (count >= _gameConfiguration.WinCondition)
+                {
+                    return true; // Win found
+                }
+            }
+            else
+            {
+                count = 0; // Reset count if the sequence breaks
+            }
+        }
+    }
+    count = 0;
+
+    
+    for (int i = 0; i < _gameConfiguration.WinCondition; i++)
+    {
+        if (_gameBoard[_slidingGrid.StartRow + i, _slidingGrid.StartCol + i] != gamePiece) continue;
+        count++;
+        if (count >= _gameConfiguration.WinCondition)
+        {
+            return true; // Win found
+        }
+    }
+    count = 0;
+    
+    for (int i = 0; i < _gameConfiguration.WinCondition; i++)
+    {
+        if (_gameBoard[_slidingGrid.EndRow - i, _slidingGrid.StartCol + i] != gamePiece) continue;
+        count++;
+        Console.WriteLine(count);
+        if (count >= _gameConfiguration.WinCondition)
+        {
+            return true; // Win found
+        }
+    }
+
+    return false; // No win found
+    }
+    // Allow users place one of the pieces that still in their hand
     public static string MakeAMove()
     {
         switch (_nextMoveBy)
@@ -83,6 +155,14 @@ public class TicTacTwoBrain
             }
             _gameBoard[inputX, inputY] = _nextMoveBy;
             SubtractPieces();
+
+            if (CheckWinCondition(_nextMoveBy))
+            {
+                Console.Clear();
+                Console.WriteLine($"Congratulations {_nextMoveBy}! You won!");
+                return "E";
+            }
+            
             // flip the next piece
             _nextMoveBy = _nextMoveBy == EGamePiece.X ? EGamePiece.O : EGamePiece.X;
             break;
@@ -103,13 +183,15 @@ public class TicTacTwoBrain
 
             if (!CheckCoordinates(coordinatesGrid)) continue;
             
+            gridInstance.GetGridBounds();
             
-            gridInstance.GridCenterX = int.Parse(coordinatesGrid[0]);
-            gridInstance.GridCenterY = int.Parse(coordinatesGrid[1]);
+            _slidingGrid.GridCenterX = int.Parse(coordinatesGrid[0]);
+            _slidingGrid.GridCenterY = int.Parse(coordinatesGrid[1]);
             
             gridInstance.GetGridBounds();
-            if (!(gridInstance.StartRow >= 0 && gridInstance.EndRow <= _gameConfiguration.BoardSizeWidth - 1 &&
-                  gridInstance.StartCol >= 0 && gridInstance.EndRow <= _gameConfiguration.BoardSizeHeight - 1))
+            
+            if (!(_slidingGrid.StartRow >= 0 && _slidingGrid.EndRow <= _gameConfiguration.BoardSizeWidth - 1 &&
+                  _slidingGrid.StartCol >= 0 && _slidingGrid.EndRow <= _gameConfiguration.BoardSizeHeight - 1))
             {
                 ThrowError("Invalid coordinates. Grid is out if board bounds!");
                 continue;
@@ -180,6 +262,12 @@ public class TicTacTwoBrain
                 Console.WriteLine(e.Message);
             }
         } while (true);
+        if (CheckWinCondition(_nextMoveBy))
+        {
+            Console.Clear();
+            Console.WriteLine($"Congratulations {_nextMoveBy}! You won!");
+            return "E";
+        }
         _nextMoveBy = _nextMoveBy == EGamePiece.X ? EGamePiece.O : EGamePiece.X;
         return "E";
     }
@@ -230,7 +318,13 @@ public class TicTacTwoBrain
             
             _gameBoard[inputX, inputY] = EGamePiece.Empty;
             _gameBoard[inputNewX, inputNewY] = pieceToMove;
-                
+            
+            if (CheckWinCondition(_nextMoveBy))
+            {
+                Console.Clear();
+                Console.WriteLine($"Congratulations {_nextMoveBy}! You won!");
+                return "E";
+            }
             
             _nextMoveBy = _nextMoveBy == EGamePiece.X ? EGamePiece.O : EGamePiece.X;
             return "E";
