@@ -2,9 +2,9 @@
 
 namespace DAL;
 
-public class ConfigRepository
+public class ConfigRepositoryHardcoded : IConfigRepository
 {
-    private List<GameConfiguration> _gameConfigurations =
+    public List<GameConfiguration> _gameConfigurations =
     [
         new GameConfiguration()
         {
@@ -21,7 +21,7 @@ public class ConfigRepository
             GridSizeHeight = 5,
             GridSizeWidth = 5,
             WinCondition = 3,
-            GridColor = "Red",
+            // GridColor = "Red",
             Player1Pieces = [EGamePiece.X, EGamePiece.X, EGamePiece.X, EGamePiece.X, EGamePiece.X],
             Player2Pieces = [EGamePiece.O, EGamePiece.O, EGamePiece.O, EGamePiece.O, EGamePiece.O]
 
@@ -43,7 +43,7 @@ public class ConfigRepository
         }
     ];
 
-    public List<String> GetConfigurationNames()
+    public List<string> GetConfigurationNames()
     {
         return _gameConfigurations.Select(config => config.Name).ToList();
     }

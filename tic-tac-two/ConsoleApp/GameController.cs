@@ -4,9 +4,9 @@ using MenuSystem;
 
 namespace ConsoleApp;
 
-public static class GameController
+public class GameController
 {
-    private static readonly ConfigRepository ConfigRepository = new ConfigRepository();
+    private static readonly IConfigRepository ConfigRepository = new ConfigRepositoryJson();
     public static string MainLoop()
     {
         var chosenConfigShortcut = ChooseConfiguration();

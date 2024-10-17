@@ -18,7 +18,7 @@ public class SlidingGrid
     public SlidingGrid(GameConfiguration gameConfiguration)
     {
         _gameConfiguration = gameConfiguration;
-        _gridColor = _gameConfiguration.GridColor;
+        // _gridColor = _gameConfiguration.GridColor;
         _gridHeight = _gameConfiguration.GridSizeHeight;
         _gridWidth = _gameConfiguration.GridSizeWidth;
     }

@@ -3,7 +3,7 @@
 public class Menu
 {
     private string MenuHeader { get; set; }
-    private static string _menuDivider = "================";
+    private static string _menuDivider = "============";
     public static List<MenuItem> MenuItems { get; set; }
 
     private MenuItem _menuItemExit = new MenuItem()
@@ -88,14 +88,6 @@ public class Menu
             {
                 return _menuItemReturnMain.Shortcut;
             }
-
-            if (!string.IsNullOrEmpty(menuReturnValue))
-            {
-                return menuReturnValue;
-            }
-            
-            // return menuItem.Shortcut;
-            
         } while (true);
     }
 

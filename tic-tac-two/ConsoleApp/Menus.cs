@@ -1,10 +1,11 @@
-﻿using GameBrain;
+﻿using DAL;
+using GameBrain;
 using MenuSystem;
 
 namespace ConsoleApp;
 
-public static class Menus
-{
+public class Menus
+{ 
     public static Menu OptionsMenu => new Menu(
         EMenuLevel.Secondary,
         "TIC-TAC-TWO", [
@@ -12,12 +13,18 @@ public static class Menus
         {
             Shortcut = "C",
             Title = "Create New Game Configuration",
+            MenuItemAction = ConfigCreation
+        },
+        new MenuItem()
+        {
+            Shortcut = "B",
+            Title = "Change Game Configuration",
             MenuItemAction = DummyMethod
         },
         new MenuItem()
         {
-            Shortcut = "O",
-            Title = "O starts",
+            Shortcut = "D",
+            Title = "Delete Game Configuration",
             MenuItemAction = DummyMethod
         }
         
@@ -60,6 +67,12 @@ public static class Menus
                 Shortcut = "C",
                 Title = "Change Position for the Piece",
                 MenuItemAction = TicTacTwoBrain.ChangePiecePosition
+            },
+            new MenuItem()
+            {
+                Shortcut = "S",
+                Title = "Save Game",
+                MenuItemAction = DummyMethod
             }
         ]);
     
@@ -75,6 +88,13 @@ public static class Menus
     {
         OptionsMenu.Run();
         return "R";
+    }
+
+    public static string ConfigCreation()
+    {
+        OptionsController.MainLoop();
+        
+        return "";
     }
     
     
