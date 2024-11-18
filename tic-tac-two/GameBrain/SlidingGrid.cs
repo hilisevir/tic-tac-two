@@ -1,11 +1,13 @@
-﻿namespace GameBrain;
+﻿using System.Text.Json.Serialization;
+
+namespace GameBrain;
 
 public class SlidingGrid
 {
-    private readonly GameConfiguration _gameConfiguration;
-    private readonly int _gridHeight;
-    private readonly int _gridWidth;
-    private string _gridColor;
+    public GameConfiguration _gameConfiguration;
+    public int GridHeight { get;}
+    public int GridWidth { get;}
+    // private string _gridColor;
     public int GridCenterX { get; set; }
     public int GridCenterY { get; set; }
 
@@ -15,24 +17,38 @@ public class SlidingGrid
     public int EndCol { get; private set; }
     
     
+    
     public SlidingGrid(GameConfiguration gameConfiguration)
     {
         _gameConfiguration = gameConfiguration;
         // _gridColor = _gameConfiguration.GridColor;
-        _gridHeight = _gameConfiguration.GridSizeHeight;
-        _gridWidth = _gameConfiguration.GridSizeWidth;
+        GridHeight = _gameConfiguration.GridSizeHeight;
+        GridWidth = _gameConfiguration.GridSizeWidth;
     }
 
+    [JsonConstructor]
+    public SlidingGrid(int gridCenterX, int gridCenterY, int startRow, int endRow, int startCol, int endCol)
+    {
+        GridCenterX = gridCenterX;
+        GridCenterY = gridCenterY;
+        StartRow = startRow;
+        EndRow = endRow;
+        StartCol = startCol;
+        EndCol = endCol;
+        GridHeight = endCol - startCol + 1;
+        GridWidth = endRow - startRow + 1;
+    }
+    
     public void GetGridBounds()
     {
-        var halfHeight = _gridHeight / 2;
-        var halfWidth = _gridWidth / 2;
+        var halfHeight = GridHeight / 2;
+        var halfWidth = GridWidth / 2;
 
         StartRow = GridCenterX - halfWidth;
-        EndRow = _gridHeight % 2 == 0 ? GridCenterX + halfHeight - 1 : GridCenterX + halfHeight;
+        EndRow = GridHeight % 2 == 0 ? GridCenterX + halfHeight - 1 : GridCenterX + halfHeight;
 
         StartCol = GridCenterY - halfHeight;
-        EndCol = _gridWidth % 2 == 0 ? GridCenterY + halfWidth - 1 : GridCenterY + halfWidth;
+        EndCol = GridWidth % 2 == 0 ? GridCenterY + halfWidth - 1 : GridCenterY + halfWidth;
     }
     public void MoveRight()
     {

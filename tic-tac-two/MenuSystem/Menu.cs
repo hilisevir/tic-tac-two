@@ -4,7 +4,7 @@ public class Menu
 {
     private string MenuHeader { get; set; }
     private static string _menuDivider = "============";
-    public static List<MenuItem> MenuItems { get; set; }
+    private List<MenuItem> MenuItems { get; set; }
 
     private MenuItem _menuItemExit = new MenuItem()
     {
@@ -26,7 +26,8 @@ public class Menu
 
 
     private EMenuLevel _menuLevel { get; set; }
-
+    
+    private bool _isCustomMenu { get; set; }
 
     public void SetMenuItemAction(string shortCut, Func<string> action)
     {
@@ -34,7 +35,7 @@ public class Menu
         menuItem.MenuItemAction = action;
     }
     
-    public Menu(EMenuLevel menuLevel, string menuHeader, List<MenuItem> menuItems)
+    public Menu(EMenuLevel menuLevel, string menuHeader, List<MenuItem> menuItems, bool isCustomMenu = false)
     {
         if (string.IsNullOrWhiteSpace(menuHeader))
         {
@@ -47,6 +48,7 @@ public class Menu
             throw new ApplicationException("Menu items cannot be null or empty.");
         }
         MenuItems = menuItems;
+        _isCustomMenu = isCustomMenu;
         _menuLevel = menuLevel;
         
         if (_menuLevel != EMenuLevel.Main)
@@ -69,25 +71,28 @@ public class Menu
         {
             var menuItem = DisplayMenuGetUserChoice();
             var menuReturnValue = "";
-            
+
             if (menuItem.MenuItemAction != null)
             {
                 menuReturnValue = menuItem.MenuItemAction();
+                if (_isCustomMenu) return menuReturnValue;
             }
 
             if (menuItem.Shortcut == _menuItemReturn.Shortcut)
             {
                 return menuItem.Shortcut;
             }
+            
             if (menuItem.Shortcut == _menuItemExit.Shortcut || menuReturnValue == _menuItemExit.Shortcut)
             {
                 return _menuItemExit.Shortcut;
             }
-            if ((menuItem.Shortcut == _menuItemReturnMain.Shortcut || menuReturnValue == _menuItemReturnMain.Shortcut)
-                && _menuLevel != EMenuLevel.Main)
+
+            if ((menuItem.Shortcut == _menuItemReturnMain.Shortcut || menuReturnValue == _menuItemReturnMain.Shortcut) && _menuLevel != EMenuLevel.Main)
             {
                 return _menuItemReturnMain.Shortcut;
             }
+
         } while (true);
     }
 

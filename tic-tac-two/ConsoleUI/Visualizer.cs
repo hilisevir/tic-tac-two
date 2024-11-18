@@ -3,7 +3,7 @@
 namespace ConsoleUI;
 
 
-public class Visualizer
+public static class Visualizer
 {
     public static void DrawBoard(TicTacTwoBrain gameInstance, SlidingGrid gridInstance)
     {
@@ -23,7 +23,7 @@ public class Visualizer
                     Console.ForegroundColor = ConsoleColor.Gray;
                 }
                 
-                Console.Write(" " + DrawGamePiece(gameInstance.GameBoard[x, y]) + " ");
+                Console.Write(" " + DrawGamePiece(gameInstance.GameBoard[x][y]) + " ");
                 if (x != gameInstance.DimX - 1)
                 {
                     Console.Write("|");
@@ -34,7 +34,7 @@ public class Visualizer
             {
                 for (var x = 0; x < gameInstance.DimX; x++)
                 {
-                    if (x >= gridInstance.StartRow && x <= gridInstance.EndRow 
+                    if (x >= gridInstance.StartRow && x <= gridInstance.EndRow
                                                    && y >= gridInstance.StartCol 
                                                    && y <= gridInstance.EndCol - 1)
                     {
@@ -58,8 +58,8 @@ public class Visualizer
         }
         Console.WriteLine();
         Console.ResetColor();
-        Console.WriteLine($"Player1: {string.Join(' ', TicTacTwoBrain.Player1Pieces)}");
-        Console.WriteLine($"Player2: {string.Join(' ', TicTacTwoBrain.Player2Pieces)}");
+        // Console.WriteLine($"Player1: {string.Join(' ', TicTacTwoBrain.Player1Pieces)}");
+        // Console.WriteLine($"Player2: {string.Join(' ', TicTacTwoBrain.Player2Pieces)}");
     }
 
     private static string DrawGamePiece(EGamePiece piece) =>

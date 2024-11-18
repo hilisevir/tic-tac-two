@@ -1,15 +1,19 @@
-﻿
-
-using DAL;
+﻿using DAL;
 using GameBrain;
 
 namespace ConsoleApp;
 
 public static class OptionsController
-{ 
+{
+    // private static readonly IConfigRepository ConfigRepository = new ConfigRepositoryJson();
+
+    private static AppDbContextFactory factory = new AppDbContextFactory();
+    private static AppDbContext dbContext = factory.CreateDbContext(Array.Empty<string>());
+    private static IConfigRepository ConfigRepository = new ConfigRepositoryDb(dbContext);
+    
     public static string MainLoop()
         {
-            string input;
+            string? input;
             do
             {
                 Console.WriteLine("Create a new game configuration.");
@@ -70,7 +74,7 @@ public static class OptionsController
                 };
 
                 // Add the new configuration to the repository
-                ConfigRepositoryJson.SaveConfiguration(newConfig);
+                ConfigRepository.SaveConfiguration(newConfig);
                 Console.WriteLine($"Game configuration '{name}' has been added.");
                 
                 // Ask user if they want to create another configuration

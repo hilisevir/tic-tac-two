@@ -4,16 +4,16 @@ using MenuSystem;
 
 namespace ConsoleApp;
 
-public class Menus
+public static class Menus
 { 
     public static Menu OptionsMenu => new Menu(
         EMenuLevel.Secondary,
-        "TIC-TAC-TWO", [
+        "TIC-TAC-TWO Options", [
         new MenuItem()
         {
             Shortcut = "C",
             Title = "Create New Game Configuration",
-            MenuItemAction = ConfigCreation
+            MenuItemAction = OptionsController.MainLoop
         },
         new MenuItem()
         {
@@ -43,59 +43,15 @@ public class Menus
         {
             Shortcut = "O",
             Title = "Options",
-            MenuItemAction = OptionsRun
+            MenuItemAction = OptionsMenu.Run
         }
     ]);
-
-    public static Menu GameMenu => new Menu(
-        EMenuLevel.InGame,
-        "TIC_TAC_TWO", [
-            new MenuItem()
-            {
-                Shortcut = "G",
-                Title = "Move a Grid",
-                MenuItemAction = TicTacTwoBrain.MoveAGrid
-            },
-            new MenuItem()
-            {
-                Shortcut = "P",
-                Title = "Place a Piece",
-                MenuItemAction = TicTacTwoBrain.MakeAMove
-            },
-            new MenuItem()
-            {
-                Shortcut = "C",
-                Title = "Change Position for the Piece",
-                MenuItemAction = TicTacTwoBrain.ChangePiecePosition
-            },
-            new MenuItem()
-            {
-                Shortcut = "S",
-                Title = "Save Game",
-                MenuItemAction = DummyMethod
-            }
-        ]);
     
-
     public static string DummyMethod()
     {
         Console.WriteLine("Just press any key to continue...");
         Console.ReadKey();
         return "foobar";
     }
-
-    public static string OptionsRun()
-    {
-        OptionsMenu.Run();
-        return "R";
-    }
-
-    public static string ConfigCreation()
-    {
-        OptionsController.MainLoop();
-        
-        return "";
-    }
-    
     
 }

@@ -4,10 +4,7 @@ using GameBrain;
 namespace DAL;
 
 public class ConfigRepositoryJson : IConfigRepository
-{
-
-    
-
+{ 
     public List<string> GetConfigurationNames()
     {
         ChecckAndCreateInitialConfig();
@@ -50,10 +47,10 @@ public class ConfigRepositoryJson : IConfigRepository
         return config;
     }
 
-    public static void SaveConfiguration(GameConfiguration config)
+    public void SaveConfiguration(GameConfiguration config)
     {
         var configJsonStr = JsonSerializer.Serialize(config);
-        var timestamp = DateTime.Now.ToString("yyyy-MM-ddTHH-mm-ss"); // Replaces colons with dashes
+        var timestamp = DateTime.Now.ToString("yyyy-MM-ddTHH-mm-ss");
         var fileName = FileHelper._basePath + 
                        config.Name + " " + 
                        timestamp + 

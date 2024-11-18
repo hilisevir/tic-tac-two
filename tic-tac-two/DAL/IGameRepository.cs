@@ -4,5 +4,7 @@ namespace DAL;
 
 public interface IGameRepository
 {
-    public void SaveGame(GameState state);
+    List<string> GetGameNames();
+    public void SaveGame(GameState newGameState);
+    GameState GetGameByName(string gameName);
 }

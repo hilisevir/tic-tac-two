@@ -52,4 +52,9 @@ public class ConfigRepositoryHardcoded : IConfigRepository
     {
         return _gameConfigurations.Single(config => config.Name == name);
     }
+
+    public void SaveConfiguration(GameConfiguration newConfig)
+    {
+        throw new NotImplementedException();
+    }
 }
