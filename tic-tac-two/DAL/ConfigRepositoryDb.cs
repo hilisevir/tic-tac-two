@@ -15,12 +15,29 @@ public class ConfigRepositoryDb : IConfigRepository
     
     public List<string> GetConfigurationNames()
     {
+        ChecckAndCreateInitialConfig();
+        
         return _context.Configurations
             .OrderBy(c => c.Name)
             .Select(c => c.Name)
             .ToList();
     }
 
+    private void ChecckAndCreateInitialConfig()
+    {
+        var hardCodedRepo = new ConfigRepositoryHardcoded();
+        var optionNames = hardCodedRepo.GetConfigurationNames();
+
+        if (!_context.Configurations.Any())
+        {
+            foreach (var optionName in optionNames)
+            {
+                var gameOption = hardCodedRepo.GetConfigurationByName(optionName);
+                SaveConfiguration(gameOption);
+            }
+        }
+    }
+    
     public GameConfiguration GetConfigurationByName(string name)
     {
         var configuration = _context.Configurations
@@ -60,4 +77,5 @@ public class ConfigRepositoryDb : IConfigRepository
         
         _context.SaveChanges();
     }
+    
 }

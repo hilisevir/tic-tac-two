@@ -1,80 +1,13 @@
 ﻿using DAL;
 using GameBrain;
-using MenuSystem;
-
 namespace ConsoleApp;
 
 
 
 public static class GameController
 {
-    private static AppDbContextFactory factory = new AppDbContextFactory();
-    private static AppDbContext dbContext = factory.CreateDbContext(Array.Empty<string>());
-    private static IConfigRepository ConfigRepository = new ConfigRepositoryDb(dbContext);
-    private static readonly IGameRepository GameRepository = new GameRepositoryDb(dbContext);
-    
-    
-    // private static readonly IConfigRepository ConfigRepository = new ConfigRepositoryJson();
-    // private static readonly IGameRepository GameRepository = new GameRepositoryJson();
-    
-    public static string MainLoop()
+    public static void GameLoop(SlidingGrid gridConstruct, TicTacTwoBrain gameInstance)
     {
-        Console.Write("Would you like to load the game or start the new one? (L/N): ");
-        var choice = Console.ReadLine() ?? "N";
-        
-        GameConfiguration chosenConfig = default;
-        GameState chosenGame = default;
-        SlidingGrid gridConstruct;
-        TicTacTwoBrain gameInstance;
-        
-        if (choice.ToUpper() == "N")
-        {
-            var chosenConfigShortcut = ChooseConfiguration();
-
-            if (!int.TryParse(chosenConfigShortcut, out var configNo))
-            {
-                return chosenConfigShortcut;
-            }
-        
-            chosenConfig = ConfigRepository.GetConfigurationByName(
-                ConfigRepository.GetConfigurationNames()[configNo]
-            );
-        }
-        else
-        {
-            var chosenGameShortcut = ChooseSavedGame();
-            if (!int.TryParse(chosenGameShortcut, out var gameNo))
-            {
-                return chosenGameShortcut;
-            }
-            
-            chosenGame = GameRepository.GetGameByName(
-                GameRepository.GetGameNames()[gameNo]
-            );
-            
-        }
-
-
-        if (chosenGame != null)
-        {
-            gridConstruct = new SlidingGrid(
-                chosenGame.SlidingGrid.GridCenterX,
-                chosenGame.SlidingGrid.GridCenterY,
-                chosenGame.SlidingGrid.StartRow,
-                chosenGame.SlidingGrid.EndRow,
-                chosenGame.SlidingGrid.StartCol,
-                chosenGame.SlidingGrid.EndCol);
-            gameInstance = new TicTacTwoBrain(chosenGame, gridConstruct);
-            
-        } 
-        else
-        {
-            gridConstruct = new SlidingGrid(chosenConfig);
-            gameInstance = new TicTacTwoBrain(chosenConfig, gridConstruct);
-            gameInstance.PlaceAGrid(gridConstruct);
-        }
-        
-        
         var flag = true;
         do
         {
@@ -126,7 +59,7 @@ public static class GameController
                         
                         if (string.IsNullOrEmpty(input)) input = GetUniqueGameName();
                         
-                        GameRepository.SaveGame(gameInstance.GetGameState(input));
+                        RepositoryHelper.GameRepository.SaveGame(gameInstance.GetGameState(input));
                     }
                     break;
                 case "5":
@@ -142,56 +75,16 @@ public static class GameController
 
         } while (flag);
 
-        return "Game finished!";
     }
 
-    private static string ChooseConfiguration()
-    {
-        var configMenuItems = new List<MenuItem>();
-        for (var i = 0; i < ConfigRepository.GetConfigurationNames().Count; i++)
-        {
-            var returnValue = i.ToString();
-            configMenuItems.Add(new MenuItem()
-            {
-                Title = ConfigRepository.GetConfigurationNames()[i],
-                Shortcut = (i + 1).ToString(),
-                MenuItemAction = () => returnValue
-            });
-        }
     
-        var configMenu = new Menu(EMenuLevel.Secondary, "TIC-TAC-TWO Game Config", 
-            configMenuItems, 
-            isCustomMenu: true);
-
-        return configMenu.Run();
-    }
-    private static string ChooseSavedGame()
-    {
-        var gameMenuItems = new List<MenuItem>();
-        for (var i = 0; i < GameRepository.GetGameNames().Count; i++)
-        {
-            var returnValue = i.ToString();
-            gameMenuItems.Add(new MenuItem()
-            {
-                Title = GameRepository.GetGameNames()[i],
-                Shortcut = (i + 1).ToString(),
-                MenuItemAction = () => returnValue
-            });
-        }
-    
-        var loadMenu = new Menu(EMenuLevel.Secondary, "TIC-TAC-TWO Game Saves", 
-            gameMenuItems, 
-            isCustomMenu: true);
-
-        return loadMenu.Run();
-    }
     private static string GetUniqueGameName()
     {
         var count = 0;
-        var res = GameRepository.GetGameNames();
-        for (int i = 0; i < res.Count; i++)
+        var res = RepositoryHelper.GameRepository.GetGameNames();
+        foreach (var t in res)
         {
-            if (res[i].Contains("New Save "))
+            if (t.Contains("New Save "))
             {
                 count++;
             }

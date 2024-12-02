@@ -1,12 +1,10 @@
-﻿using DAL;
-using GameBrain;
-using MenuSystem;
+﻿using MenuSystem;
 
 namespace ConsoleApp;
 
 public static class Menus
-{ 
-    public static Menu OptionsMenu => new Menu(
+{
+    private static Menu OptionsMenu => new Menu(
         EMenuLevel.Secondary,
         "TIC-TAC-TWO Options", [
         new MenuItem()
@@ -37,7 +35,13 @@ public static class Menus
         {
             Shortcut = "N",
             Title = "New Game",
-            MenuItemAction = GameController.MainLoop
+            MenuItemAction = GameControllerNewGame.MainLoop
+        },
+        new MenuItem()
+        {
+            Shortcut = "L",
+            Title = "Load Game",
+            MenuItemAction = GameControllerLoadGame.MainLoop
         },
         new MenuItem()
         {
@@ -46,8 +50,8 @@ public static class Menus
             MenuItemAction = OptionsMenu.Run
         }
     ]);
-    
-    public static string DummyMethod()
+
+    private static string DummyMethod()
     {
         Console.WriteLine("Just press any key to continue...");
         Console.ReadKey();
