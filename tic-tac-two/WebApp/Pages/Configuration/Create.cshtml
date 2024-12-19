@@ -1,0 +1,84 @@
+@page
+@model WebApp.Pages_Configuration.CreateModel
+
+        @{
+        ViewData["Title"] = "Create";
+        }
+        
+        <h1>Create</h1>
+        
+    <h4>Configuration</h4>
+    <hr />
+    <div class="row">
+    <div class="col-md-4">
+    <form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Configuration.Name" class="control-label"></label>
+                <input asp-for="Configuration.Name" class="form-control" />
+                <span asp-validation-for="Configuration.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Configuration.BoardWidth" class="control-label"></label>
+                <input asp-for="Configuration.BoardWidth" class="form-control" />
+                <span asp-validation-for="Configuration.BoardWidth" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Configuration.BoardHeight" class="control-label"></label>
+                <input asp-for="Configuration.BoardHeight" class="form-control" />
+                <span asp-validation-for="Configuration.BoardHeight" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Configuration.GridWidth" class="control-label"></label>
+                <input asp-for="Configuration.GridWidth" class="form-control" />
+                <span asp-validation-for="Configuration.GridWidth" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Configuration.GridHeight" class="control-label"></label>
+                <input asp-for="Configuration.GridHeight" class="form-control" />
+                <span asp-validation-for="Configuration.GridHeight" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Configuration.WinCondition" class="control-label"></label>
+                <input asp-for="Configuration.WinCondition" class="form-control" />
+                <span asp-validation-for="Configuration.WinCondition" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Configuration.MovePieceAfterNMoves" class="control-label"></label>
+                <input asp-for="Configuration.MovePieceAfterNMoves" class="form-control" />
+                <span asp-validation-for="Configuration.MovePieceAfterNMoves" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Configuration.Player1PieceAmount" class="control-label"></label>
+                <input asp-for="Configuration.Player1PieceAmount" class="form-control" />
+                <span asp-validation-for="Configuration.Player1PieceAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Configuration.Player2PieceAmount" class="control-label"></label>
+                <input asp-for="Configuration.Player2PieceAmount" class="form-control" />
+                <span asp-validation-for="Configuration.Player2PieceAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Configuration.CreatedAt" class="control-label"></label>
+                <input asp-for="Configuration.CreatedAt" class="form-control" />
+                <span asp-validation-for="Configuration.CreatedAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Configuration.ModifiedAt" class="control-label"></label>
+                <input asp-for="Configuration.ModifiedAt" class="form-control" />
+                <span asp-validation-for="Configuration.ModifiedAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index" asp-route-UserName="@ViewData["UserName"]">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

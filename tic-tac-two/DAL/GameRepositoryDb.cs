@@ -4,90 +4,132 @@ using GameBrain;
 
 namespace DAL;
 
-public class GameRepositoryDb : IGameRepository
+public class GameRepositoryDb(AppDbContext context) : IGameRepository
 {
-    private readonly AppDbContext _context;
-
-    public GameRepositoryDb(AppDbContext context)
+    public Dictionary<int, string> GetGameNames()
     {
-        _context = context;
-    }
-    
-    public List<string> GetGameNames()
-    {
-        return _context.SaveGames
+        return context.SaveGames
             .OrderBy(c => c.Name)
-            .Select(c => c.Name)
-            .ToList();
+            .ToDictionary(c => c.Id, c => c.Name);
     }
 
     public void SaveGame(GameState gameState)
     {
-        _context.SaveGames.Add(new SaveGame()
+        var existingGame = context.SaveGames.FirstOrDefault(g => g.Id == gameState.Id);
+
+        if (existingGame != null)
         {
-            Name = gameState.Name,
-            GameBoard = gameState.BoardToString(),
-            NextMoveBy = JsonSerializer.Serialize(gameState.NextMoveBy),
-            Player1PieceAmount = gameState.PiecesToString(gameState.Player1PieceAmount),
-            Player2PieceAmount = gameState.PiecesToString(gameState.Player2PieceAmount),
-            GridHeight = gameState.SlidingGrid.GridHeight,
-            GridWidth = gameState.SlidingGrid.GridWidth,
-            GridCenterX = gameState.SlidingGrid.GridCenterX,
-            GridCenterY = gameState.SlidingGrid.GridCenterY,
-            StartRow = gameState.SlidingGrid.StartRow,
-            EndRow = gameState.SlidingGrid.EndRow,
-            StartColumn = gameState.SlidingGrid.StartCol,
-            EndColumn = gameState.SlidingGrid.EndCol,
-            ConfigurationId = GetConfigurationId(gameState.GameConfiguration.Name)
+            existingGame.Name = gameState.Name;
+            existingGame.GameBoard = gameState.BoardToString();
+            existingGame.NextMoveBy = gameState.NextMoveBy;
+            existingGame.Player1PieceAmount = gameState.Player1PieceAmount;
+            existingGame.Player2PieceAmount = gameState.Player2PieceAmount;
+            existingGame.GridHeight = gameState.SlidingGrid.GridHeight;
+            existingGame.GridWidth = gameState.SlidingGrid.GridWidth;
+            existingGame.GridCenterX = gameState.SlidingGrid.GridCenterX;
+            existingGame.GridCenterY = gameState.SlidingGrid.GridCenterY;
+            existingGame.StartRow = gameState.SlidingGrid.StartRow;
+            existingGame.EndRow = gameState.SlidingGrid.EndRow;
+            existingGame.StartColumn = gameState.SlidingGrid.StartCol;
+            existingGame.EndColumn = gameState.SlidingGrid.EndCol;
+            existingGame.GamePassword = gameState.GamePassword;
+            existingGame.MadeMoves = gameState.MadeMoves;
+            existingGame.ConfigurationId = gameState.GameConfiguration.Id;
+            existingGame.GameTypeId = gameState.GameType;
             
-        });
-        
-        _context.SaveChanges();
-        
+            context.SaveChanges();
+        }
+        else
+        {
+            var saveGame = new SaveGame
+            {
+                Name = gameState.Name,
+                GameBoard = gameState.BoardToString(),
+                NextMoveBy = gameState.NextMoveBy,
+                Player1PieceAmount = gameState.Player1PieceAmount,
+                Player2PieceAmount = gameState.Player2PieceAmount,
+                GridHeight = gameState.SlidingGrid.GridHeight,
+                GridWidth = gameState.SlidingGrid.GridWidth,
+                GridCenterX = gameState.SlidingGrid.GridCenterX,
+                GridCenterY = gameState.SlidingGrid.GridCenterY,
+                StartRow = gameState.SlidingGrid.StartRow,
+                EndRow = gameState.SlidingGrid.EndRow,
+                StartColumn = gameState.SlidingGrid.StartCol,
+                EndColumn = gameState.SlidingGrid.EndCol,
+                GamePassword = gameState.GamePassword,
+                MadeMoves = gameState.MadeMoves,
+                ConfigurationId = gameState.GameConfiguration.Id,
+                GameTypeId = gameState.GameType
+            };
+            
+            context.SaveGames.Add(saveGame);
+            context.SaveChanges();
+            gameState.Id = saveGame.Id;
+        }
+    
     }
 
-    public GameState GetGameByName(string gameName)
+    public GameState GetGameStateById(int gameId)
     {
-        var game = _context.SaveGames
-            .FirstOrDefault(c => c.Name == gameName);
-        SlidingGrid slidingGrid = new SlidingGrid(game.GridCenterX, game.GridCenterY,
-            game.StartRow, game.EndRow, game.StartColumn, game.EndColumn);
+        var game = context.SaveGames
+            .FirstOrDefault(c => c.Id == gameId);
+        
+        var slidingGrid = new SlidingGrid(game!.GridCenterX, game.GridCenterY,
+            game.StartRow, game.EndRow, game.StartColumn, game.EndColumn, game.GridHeight, game.GridWidth);
 
-        EGamePiece[][]? gameBoard = JsonSerializer.Deserialize<EGamePiece[][]>(game.GameBoard);
+        var gameBoard = JsonSerializer.Deserialize<EGamePiece[][]>(game.GameBoard);
 
-        Configuration conf = GetConfigurationById(game.ConfigurationId);
+        var conf = GetConfigurationById(game.ConfigurationId);
 
-        GameConfiguration gameConfiguration = new GameConfiguration()
+        var gameConfiguration = new GameConfiguration()
         {
+            Id = conf!.Id,
             Name = conf.Name,
-            BoardSizeWidth = conf.BoardWidth,
-            BoardSizeHeight = conf.BoardHeight,
-            GridSizeWidth = conf.GridWidth,
-            GridSizeHeight = conf.GridHeight,
+            BoardWidth = conf.BoardWidth,
+            BoardHeight = conf.BoardHeight,
+            GridWidth = conf.GridWidth,
+            GridHeight = conf.GridHeight,
             WinCondition = conf.WinCondition,
             MovePieceAfterNMoves = conf.MovePieceAfterNMoves,
-            Player1Pieces = JsonSerializer.Deserialize<List<EGamePiece>>(conf.Player1Pieces),
-            Player2Pieces = JsonSerializer.Deserialize<List<EGamePiece>>(conf.Player2Pieces)
+            Player1PieceAmount = game.Player2PieceAmount,
+            Player2PieceAmount = game.Player2PieceAmount
         };
         
-        GameState gameState = new GameState(gameBoard, gameConfiguration, slidingGrid);
+        var gameState = new GameState(gameBoard!, gameConfiguration, slidingGrid, game.MadeMoves, game.GamePassword, game.NextMoveBy,
+            game.Id, game.GameTypeId, game.Player1PieceAmount, game.Player2PieceAmount)
+        {
+            Name = game.Name
+        };
 
         return gameState;
     }
 
-    private int GetConfigurationId(string configurationName)
+    public SaveGame GetSaveGameById(int gameId)
     {
-        var configuration = _context.Configurations
-            .FirstOrDefault(c => c.Name == configurationName);
-        return configuration.Id;
+        var game = context.SaveGames
+            .FirstOrDefault(c => c.Id == gameId);
+        return game!;
     }
 
-    private Configuration GetConfigurationById(int gameConfigurationId)
+    public void DeleteGame(int gameId)
     {
-        var configuration = _context.Configurations
+        var gameToDelete = context.SaveGames.FirstOrDefault(g => g.Id == gameId);
+    
+        if (gameToDelete == null)
+        {
+            return;
+        }
+        
+        context.SaveGames.Remove(gameToDelete);
+        
+        context.SaveChanges();
+    }
+
+    private Configuration? GetConfigurationById(int gameConfigurationId)
+    {
+        var configuration = context.Configurations
             .FirstOrDefault(c => c.Id == gameConfigurationId);
         
         return configuration;
     }
-    
 }

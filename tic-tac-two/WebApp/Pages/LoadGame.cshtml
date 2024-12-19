@@ -1,0 +1,35 @@
+﻿@page
+@model WebApp.Pages.LoadGame
+<h1>Load Game</h1>
+<h1>@Model.GamePassword</h1>
+
+@if (!string.IsNullOrWhiteSpace(Model.Error))
+{
+<div class="card">
+    <div class="alert alert-danger" role="alert">
+        @Model.Error
+    </div>
+</div>
+}
+
+<div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="GamePassword" class="control-label">Enter game password</label>
+                <input asp-for="GamePassword" class="form-control" />
+                <span asp-validation-for="GamePassword" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <button type="submit" name="figure" value="X" class="btn btn-primary">Join as X</button>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" name="figure" value="O" class="btn btn-primary">Join as O</button>
+            </div>
+        </form>
+    </div>
+</div>

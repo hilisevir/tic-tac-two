@@ -1,0 +1,112 @@
+﻿@page
+@model WebApp.Pages.PlayGame
+
+<link rel="stylesheet" />
+
+<div class="text-center">
+    <h1 class="display-4">TIC-TAC-TWO</h1>
+</div>
+
+@if (Model.PieceWon != null)
+{
+<div class="card">
+    <div class="alert alert-success" role="alert">
+        Congratulations! @Model.PieceWon Won!
+    </div>
+</div>
+}
+
+@if (!string.IsNullOrWhiteSpace(Model.Error))
+{
+<div class="card">
+    <div class="alert alert-danger" role="alert">
+        @Model.Error
+    </div>
+</div>
+}
+
+@if (!string.IsNullOrWhiteSpace(Model.Message))
+{
+<div class="alert alert-primary" role="alert">
+    @Model.Message
+</div>
+}
+
+@if (Model.Grid is { GridCenterX: 0, GridCenterY: 0 })
+{
+    <div class="alert alert-primary" role="alert">
+        Please place a grid!
+    </div>
+}
+
+<p>Player: @Model.UserName</p>
+<p>Your figure: @Model.YourFigure</p>
+<p>Move by: @Model.NextMoveBy</p>
+<p>Game password: @Model.GamePassword</p>
+
+<div class="game-board" style="grid-template-columns: repeat(@Model.BoardWidth, 40px); grid-template-rows: repeat(@Model.BoardHeight, 40px);">
+    @for (var y = 0; y < Model.BoardHeight; y++)
+    {
+        @for (var x = 0; x < Model.BoardWidth; x++)
+        {
+            var piece = Model.GameBoard[x][y];
+            
+            var isGridCell = Model.IsGridCell(x, y) ;
+
+            <form method="post" asp-route-x="@x" asp-route-y="@y">
+                <input type="hidden" name="Id" value="@Model.Id" />
+                <input type="hidden" name="UserName" value="@Model.UserName" />
+                <input type="hidden" name="YourFigure" value="@Model.YourFigure" />
+                <input type="hidden" name="PieceWon" value="@Model.PieceWon" />
+                <button type="submit" class="cell @(isGridCell ? "grid-cell" : "")">
+                    @if (piece != "Empty")
+                    {
+                        <span class="piece @(piece == "X" ? "player1" : "player2")">@piece</span>
+                    }
+                </button>
+            </form>
+        }
+    }
+</div>
+
+@if (Model.MadeMoves <= 0){
+    <div class="grid-controller">
+        <form method="post">
+            <input type="hidden" name="direction" value="UL" />
+            <button class="btn btn-outline-primary">↖</button>
+        </form>
+        <form method="post">
+            <input type="hidden" name="direction" value="U" />
+            <button class="btn btn-outline-primary">↑</button>
+        </form>
+        <form method="post">
+            <input type="hidden" name="direction" value="UR" />
+            <button class="btn btn-outline-primary">↗</button>
+        </form>
+
+        <form method="post">
+            <input type="hidden" name="direction" value="L" />
+            <button class="btn btn-outline-primary">←</button>
+        </form>
+        <form>
+            <button class="btn btn-outline-secondary disabled">•</button>
+        </form>
+        <form method="post">
+            <input type="hidden" name="direction" value="R" />
+            <button class="btn btn-outline-primary">→</button>
+        </form>
+
+        <form method="post">
+            <input type="hidden" name="direction" value="DL" />
+            <button class="btn btn-outline-primary">↙</button>
+        </form>
+        <form method="post">
+            <input type="hidden" name="direction" value="D" />
+            <button class="btn btn-outline-primary">↓</button>
+        </form>
+        <form method="post">
+            <input type="hidden" name="direction" value="DR" />
+            <button class="btn btn-outline-primary">↘</button>
+        </form>
+    </div>
+}

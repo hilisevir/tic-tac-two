@@ -1,10 +1,12 @@
-﻿using GameBrain;
+﻿using Domain;
+using GameBrain;
 
 namespace DAL;
 
 public interface IGameRepository
 {
-    List<string> GetGameNames();
-    public void SaveGame(GameState newGameState);
-    GameState GetGameByName(string gameName);
+    Dictionary<int, string> GetGameNames();
+    void SaveGame(GameState gameState);
+    GameState? GetGameStateById(int gameId);
+    void DeleteGame(int gameId);
 }

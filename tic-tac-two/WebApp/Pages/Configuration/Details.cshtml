@@ -1,0 +1,85 @@
+@page
+@model WebApp.Pages_Configuration.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Configuration</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Configuration.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Configuration.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Configuration.BoardWidth)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Configuration.BoardWidth)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Configuration.BoardHeight)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Configuration.BoardHeight)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Configuration.GridWidth)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Configuration.GridWidth)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Configuration.GridHeight)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Configuration.GridHeight)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Configuration.WinCondition)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Configuration.WinCondition)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Configuration.MovePieceAfterNMoves)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Configuration.MovePieceAfterNMoves)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Configuration.Player1PieceAmount)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Configuration.Player1PieceAmount)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Configuration.Player2PieceAmount)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Configuration.Player2PieceAmount)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Configuration.CreatedAt)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Configuration.CreatedAt)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Configuration.ModifiedAt)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Configuration.ModifiedAt)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Configuration.Id" asp-route-UserName="@ViewData["UserName"]">Edit</a> |
+    <a asp-page="./Index" asp-route-UserName="@ViewData["UserName"]">Back to List</a>
+</div>

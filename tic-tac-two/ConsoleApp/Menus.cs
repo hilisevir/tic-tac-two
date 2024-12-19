@@ -11,19 +11,19 @@ public static class Menus
         {
             Shortcut = "C",
             Title = "Create New Game Configuration",
-            MenuItemAction = OptionsController.MainLoop
-        },
-        new MenuItem()
-        {
-            Shortcut = "B",
-            Title = "Change Game Configuration",
-            MenuItemAction = DummyMethod
+            MenuItemAction = CreateConfigController.MainLoopCreateConfig
         },
         new MenuItem()
         {
             Shortcut = "D",
             Title = "Delete Game Configuration",
-            MenuItemAction = DummyMethod
+            MenuItemAction = DeleteConfigController.MainLoopDeleteConfig
+        },
+        new MenuItem()
+        {
+            Shortcut = "B",
+            Title = "Delete Save",
+            MenuItemAction = DeleteGameController.MainLoopDeleteGame
         }
         
     ]);
@@ -50,12 +50,4 @@ public static class Menus
             MenuItemAction = OptionsMenu.Run
         }
     ]);
-
-    private static string DummyMethod()
-    {
-        Console.WriteLine("Just press any key to continue...");
-        Console.ReadKey();
-        return "foobar";
-    }
-    
 }

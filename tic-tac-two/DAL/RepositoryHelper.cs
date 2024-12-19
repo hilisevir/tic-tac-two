@@ -6,7 +6,9 @@ public static class RepositoryHelper
     private static readonly AppDbContext DbContext = Factory.CreateDbContext(Array.Empty<string>());
     public static readonly IGameRepository GameRepository = new GameRepositoryDb(DbContext);
     public static readonly IConfigRepository ConfigRepository = new ConfigRepositoryDb(DbContext);
+    public static readonly IGameTypeRepository GameTypeRepository = new GameTypeRepositoryDb(DbContext);
     
     // public static readonly IGameRepository GameRepository = new GameRepositoryJson();
     // public static readonly IConfigRepository ConfigRepository = new ConfigRepositoryJson();
+    // public static readonly IGameTypeRepository GameTypeRepository = new GameTypeRepositoryJson();
 }

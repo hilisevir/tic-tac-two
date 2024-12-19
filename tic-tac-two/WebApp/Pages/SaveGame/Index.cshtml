@@ -1,0 +1,133 @@
+@page
+@model IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+@if (ViewData["UserName"] as string == "admin")
+{
+    <p>
+        <a asp-page="Create" asp-route-UserName="@ViewData["UserName"]">Create New</a>
+    </p>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.SaveGame[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SaveGame[0].GamePassword)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SaveGame[0].NextMoveBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SaveGame[0].Player1PieceAmount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SaveGame[0].Player2PieceAmount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SaveGame[0].SlidingGrid.GridHeight)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SaveGame[0].SlidingGrid.GridWidth)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SaveGame[0].SlidingGrid.GridCenterX)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SaveGame[0].SlidingGrid.GridCenterY)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SaveGame[0].SlidingGrid.StartRow)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SaveGame[0].SlidingGrid.EndRow)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SaveGame[0].SlidingGrid.StartCol)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SaveGame[0].SlidingGrid.EndCol)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SaveGame[0].MadeMoves)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SaveGame[0].GameType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SaveGame[0].GameConfiguration)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.SaveGame) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GamePassword)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NextMoveBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Player1PieceAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Player2PieceAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SlidingGrid.GridHeight)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SlidingGrid.GridWidth)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SlidingGrid.GridCenterX)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SlidingGrid.GridCenterY)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SlidingGrid.StartRow)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SlidingGrid.EndRow)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SlidingGrid.StartCol)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SlidingGrid.EndCol)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MadeMoves)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GameType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GameConfiguration!.Name)
+            </td>
+            <td>
+                <a asp-page="./Details" asp-route-id="@item.Id" asp-route-UserName="@ViewData["UserName"]">Details</a>
+                <a asp-page="/LoadGame" asp-route-id="@item.Id" asp-route-UserName="@ViewData["UserName"]">Load Game</a>
+                @if (ViewData["UserName"] as string == "admin")
+                {
+                    <a asp-page="./Edit" asp-route-id="@item.Id" asp-route-UserName="@ViewData["UserName"]">Edit</a>
+                    <a asp-page="./Delete" asp-route-id="@item.Id" asp-route-UserName="@ViewData["UserName"]">Delete</a>
+                }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

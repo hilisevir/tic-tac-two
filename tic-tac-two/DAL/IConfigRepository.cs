@@ -1,10 +1,13 @@
-﻿using GameBrain;
+﻿using Domain;
+using GameBrain;
 
 namespace DAL;
 
 public interface IConfigRepository
 {
-    List<string> GetConfigurationNames();
-    GameConfiguration GetConfigurationByName(string name);
+    Dictionary<int, string> GetConfigurationNames();
+    GameConfiguration GetGameConfigurationById(int configId);
+    Configuration GetConfigurationById(int configId);
     void SaveConfiguration(GameConfiguration newConfig);
+    void DeleteConfiguration(GameConfiguration config);
 }

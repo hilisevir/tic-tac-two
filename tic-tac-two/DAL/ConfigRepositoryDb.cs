@@ -1,81 +1,101 @@
-﻿using System.Text.Json;
-using Domain;
+﻿using Domain;
 using GameBrain;
 
 namespace DAL;
 
-public class ConfigRepositoryDb : IConfigRepository
+public class ConfigRepositoryDb(AppDbContext context) : IConfigRepository
 {
-    private readonly AppDbContext _context;
-
-    public ConfigRepositoryDb(AppDbContext context)
+    public Dictionary<int, string> GetConfigurationNames()
     {
-        _context = context;
-    }
-    
-    public List<string> GetConfigurationNames()
-    {
-        ChecckAndCreateInitialConfig();
+        CheckAndCreateInitialConfig();
         
-        return _context.Configurations
+        return context.Configurations
             .OrderBy(c => c.Name)
-            .Select(c => c.Name)
-            .ToList();
+            .ToDictionary(c => c.Id, c => c.Name);
     }
 
-    private void ChecckAndCreateInitialConfig()
+    private void CheckAndCreateInitialConfig()
     {
         var hardCodedRepo = new ConfigRepositoryHardcoded();
         var optionNames = hardCodedRepo.GetConfigurationNames();
 
-        if (!_context.Configurations.Any())
+        if (context.Configurations.Any()) return;
+        
+        foreach (var optionName in optionNames)
         {
-            foreach (var optionName in optionNames)
-            {
-                var gameOption = hardCodedRepo.GetConfigurationByName(optionName);
-                SaveConfiguration(gameOption);
-            }
+            var gameOption = hardCodedRepo.GetGameConfigurationById(optionName.Key);
+            SaveConfiguration(gameOption);
         }
     }
     
-    public GameConfiguration GetConfigurationByName(string name)
+    public GameConfiguration GetGameConfigurationById(int configId)
     {
-        var configuration = _context.Configurations
-            .FirstOrDefault(c => c.Name == name);
-        
-        
-        GameConfiguration config = new GameConfiguration()
+        var configuration = context.Configurations
+            .FirstOrDefault(c => c.Id == configId);
+
+
+        if (configuration != null)
         {
-            Name = configuration.Name,
-            BoardSizeWidth = configuration.BoardWidth,
-            BoardSizeHeight = configuration.BoardHeight,
-            GridSizeWidth = configuration.GridWidth,
-            GridSizeHeight = configuration.GridHeight,
-            WinCondition = configuration.WinCondition,
-            MovePieceAfterNMoves = configuration.MovePieceAfterNMoves,
-            Player1Pieces = JsonSerializer.Deserialize<List<EGamePiece>>(configuration.Player1Pieces),
-            Player2Pieces = JsonSerializer.Deserialize<List<EGamePiece>>(configuration.Player2Pieces)
-        };
+            GameConfiguration config = new GameConfiguration()
+            {
+                Id = configuration.Id,
+                Name = configuration.Name,
+                BoardWidth = configuration.BoardWidth,
+                BoardHeight = configuration.BoardHeight,
+                GridWidth = configuration.GridWidth,
+                GridHeight = configuration.GridHeight,
+                WinCondition = configuration.WinCondition,
+                MovePieceAfterNMoves = configuration.MovePieceAfterNMoves,
+                Player1PieceAmount = configuration.Player1PieceAmount,
+                Player2PieceAmount = configuration.Player2PieceAmount
+            };
         
-        return config;
+            return config;
+        }
+        
+        throw new KeyNotFoundException($"Game configuration with id {configId} not found");
+    }
+    
+    public Configuration GetConfigurationById(int configId)
+    {
+        var configuration = context.Configurations
+            .FirstOrDefault(c => c.Id == configId);
+        
+        return configuration ?? throw new InvalidOperationException($"Game configuration with id {configId} not found");
+            
     }
     
     public void SaveConfiguration(GameConfiguration gameConfig)
     {
-        _context.Configurations.Add(new Configuration()
+        context.Configurations.Add(new Configuration()
         {
             Name = gameConfig.Name,
-            BoardHeight = gameConfig.BoardSizeHeight,
-            BoardWidth = gameConfig.BoardSizeWidth,
-            GridHeight = gameConfig.GridSizeHeight,
-            GridWidth = gameConfig.GridSizeWidth,
+            BoardHeight = gameConfig.BoardHeight,
+            BoardWidth = gameConfig.BoardWidth,
+            GridHeight = gameConfig.GridHeight,
+            GridWidth = gameConfig.GridWidth,
             MovePieceAfterNMoves = gameConfig.MovePieceAfterNMoves,
-            Player1Pieces = gameConfig.PiecesToString(gameConfig.Player1Pieces),
-            Player2Pieces = gameConfig.PiecesToString(gameConfig.Player2Pieces),
+            Player1PieceAmount = gameConfig.Player1PieceAmount,
+            Player2PieceAmount = gameConfig.Player2PieceAmount,
             WinCondition = gameConfig.WinCondition,
         });
         
-        _context.SaveChanges();
+        context.SaveChanges();
+    }
+
+    public void DeleteConfiguration(GameConfiguration gameConfig)
+    {
+        var configuration = context.Configurations
+            .FirstOrDefault(c => c.Name == gameConfig.Name);
+
+        if (configuration == null)
+        {
+            Console.WriteLine($"Configuration '{gameConfig.Name}' not found. Nothing to delete.");
+            return;
+        }
+        
+        context.Configurations.Remove(configuration);
+        context.SaveChanges();
     }
     
 }

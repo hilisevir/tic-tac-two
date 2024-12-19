@@ -4,27 +4,44 @@ namespace GameBrain;
 
 public class GameState
 {
-    
-    public string Name { get; set; }
-    public EGamePiece[][] GameBoard { get; set; }
 
-    public EGamePiece NextMoveBy { get; set; } = EGamePiece.X;
-
+    public int Id {get;set;}
+    public string Name { get; set; } = default!;
+    public EGamePiece[][] GameBoard { get; set; } = default!;
+    public EGamePiece NextMoveBy { get; set; }
+    public string GamePassword { get; set; }
     public GameConfiguration GameConfiguration {get; set;}
     public SlidingGrid SlidingGrid { get; set; }
-    public List<EGamePiece>? Player1PieceAmount { get; set; }
-    public List<EGamePiece>? Player2PieceAmount { get; set; }
-
-    public GameState(EGamePiece[][] gameBoard, GameConfiguration gameConfiguration, SlidingGrid slidingGrid)
+    public int Player1PieceAmount { get; set; }
+    public int Player2PieceAmount { get; set; }
+    public int GameType { get; set; }
+    public int MadeMoves { get; set; }
+    
+    
+    public GameState(EGamePiece[][] gameBoard,
+                    GameConfiguration gameConfiguration, 
+                    SlidingGrid slidingGrid, int madeMoves = -100,
+                    string gamePassword = "", 
+                    EGamePiece nextMoveBy = EGamePiece.X, 
+                    int id = -1, int gameType = -1, 
+                    int player1PieceAmount = -1,
+                    int player2PieceAmount = -1,
+                    string name = "")
     {
+        Id = id;
+        Name = name;
         SlidingGrid = slidingGrid;
         GameBoard = gameBoard;
+        GamePassword = string.IsNullOrEmpty(gamePassword) ? GeneratePassword() : gamePassword;
         GameConfiguration = gameConfiguration;
-        Player1PieceAmount = gameConfiguration.Player1Pieces;
-        Player2PieceAmount = gameConfiguration.Player2Pieces;
-        slidingGrid._gameConfiguration = gameConfiguration;
+        Player1PieceAmount = player1PieceAmount > -1 ? player1PieceAmount : gameConfiguration.Player1PieceAmount;
+        Player2PieceAmount = player2PieceAmount > -1 ? player2PieceAmount : gameConfiguration.Player2PieceAmount;
+        slidingGrid.GameConfiguration = gameConfiguration;
+        MadeMoves = madeMoves > -100 ? madeMoves : gameConfiguration.MovePieceAfterNMoves;
+        GameType = gameType;
+        NextMoveBy = nextMoveBy;
     }
-
+    
     public override string ToString()
     {
         return JsonSerializer.Serialize(this);
@@ -35,8 +52,11 @@ public class GameState
         return JsonSerializer.Serialize(GameBoard);
     }
     
-    public string PiecesToString(List<EGamePiece>? pieces)
+    private static string GeneratePassword()
     {
-        return JsonSerializer.Serialize(pieces);
+        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        var random = new Random();
+        return new string(Enumerable.Repeat(chars, 8)
+            .Select(s => s[random.Next(s.Length)]).ToArray());
     }
 }

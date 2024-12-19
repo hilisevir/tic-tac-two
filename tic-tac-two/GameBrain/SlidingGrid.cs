@@ -4,7 +4,7 @@ namespace GameBrain;
 
 public class SlidingGrid
 {
-    public GameConfiguration _gameConfiguration;
+    public GameConfiguration GameConfiguration;
     public int GridHeight { get;}
     public int GridWidth { get;}
     // private string _gridColor;
@@ -20,14 +20,13 @@ public class SlidingGrid
     
     public SlidingGrid(GameConfiguration gameConfiguration)
     {
-        _gameConfiguration = gameConfiguration;
-        // _gridColor = _gameConfiguration.GridColor;
-        GridHeight = _gameConfiguration.GridSizeHeight;
-        GridWidth = _gameConfiguration.GridSizeWidth;
+        GameConfiguration = gameConfiguration;
+        GridHeight = GameConfiguration.GridHeight;
+        GridWidth = GameConfiguration.GridWidth;
     }
 
     [JsonConstructor]
-    public SlidingGrid(int gridCenterX, int gridCenterY, int startRow, int endRow, int startCol, int endCol)
+    public SlidingGrid(int gridCenterX, int gridCenterY, int startRow, int endRow, int startCol, int endCol, int gridHeight, int gridWidth)
     {
         GridCenterX = gridCenterX;
         GridCenterY = gridCenterY;
@@ -35,8 +34,8 @@ public class SlidingGrid
         EndRow = endRow;
         StartCol = startCol;
         EndCol = endCol;
-        GridHeight = endCol - startCol + 1;
-        GridWidth = endRow - startRow + 1;
+        GridHeight = gridHeight;
+        GridWidth = gridWidth;
     }
     
     public void GetGridBounds()
@@ -52,7 +51,7 @@ public class SlidingGrid
     }
     public void MoveRight()
     {
-        if (EndRow + 1 <= _gameConfiguration.BoardSizeWidth - 1)
+        if (EndRow + 1 <= GameConfiguration.BoardWidth - 1)
         {
             GridCenterX++;
             GetGridBounds();
@@ -94,7 +93,7 @@ public class SlidingGrid
     // Method to move the window down
     public void MoveDown()
     {
-        if (EndCol + 1 <= _gameConfiguration.BoardSizeHeight - 1)
+        if (EndCol + 1 <= GameConfiguration.BoardHeight - 1)
         {
             GridCenterY++;
             GetGridBounds();
@@ -119,7 +118,7 @@ public class SlidingGrid
         
     }public void MoveUpRight()
     {
-        if (EndRow + 1 <= _gameConfiguration.BoardSizeWidth - 1 && StartCol - 1 >= 0)
+        if (EndRow + 1 <= GameConfiguration.BoardWidth - 1 && StartCol - 1 >= 0)
         {
             GridCenterY--;
             GridCenterX++;
@@ -132,7 +131,7 @@ public class SlidingGrid
         
     }public void MoveDownLeft()
     {
-        if (EndCol + 1 <= _gameConfiguration.BoardSizeHeight - 1 && StartRow - 1 >= 0)
+        if (EndCol + 1 <= GameConfiguration.BoardHeight - 1 && StartRow - 1 >= 0)
         {
             GridCenterY++;
             GridCenterX--;
@@ -145,8 +144,8 @@ public class SlidingGrid
         
     }public void MoveDownRight()
     {
-        if (EndCol + 1 <= _gameConfiguration.BoardSizeHeight - 1
-            && StartRow + 1 <= _gameConfiguration.BoardSizeWidth - 1)
+        if (EndCol + 1 <= GameConfiguration.BoardHeight - 1
+            && StartRow + 1 <= GameConfiguration.BoardWidth - 1)
         {
             GridCenterY++;
             GridCenterX++;

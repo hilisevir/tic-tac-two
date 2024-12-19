@@ -1,0 +1,123 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.form-group {
+  margin-bottom: 1em;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 0px solid rgba(0, 0, 0, .125);
+  border-radius: .25rem;
+}
+
+.game-board {
+  display: grid;
+  gap: 2px;
+  border: 2px solid black;
+  width: fit-content;
+  margin: 20px auto;
+  overflow: auto;
+  max-width: 90vw;
+  max-height: 90vh;
+}
+
+.cell {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #FFFFFF;
+  border: 1px solid gray;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.grid-cell {
+  background-color: #FFDDDD;
+}
+
+.piece {
+  font-weight: bold;
+}
+
+.player1 {
+  color: red;
+}
+
+.player2 {
+  color: blue;
+}
+
+button {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.grid-controller {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  grid-template-rows: repeat(3, auto);
+  gap: 0;
+  justify-content: center;
+  align-items: center;
+}
+
+.grid-controller form {
+  margin: 0;
+}
+
+.grid-controller button {
+  width: 50px;
+  height: 50px;
+  border: 1px solid blue;
+  background-color: white;
+  color: blue;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  padding: 0;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.grid-controller button:hover {
+  background-color: lightblue;
+  color: white;
+}
+
+.grid-controller .disabled {
+  background-color: lightgray;
+  border: none;
+  cursor: default;
+}

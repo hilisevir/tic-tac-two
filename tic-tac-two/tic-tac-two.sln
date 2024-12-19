@@ -17,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "!Solution Items", "!Solutio
 		..\..\Downloads\Directory.Build.props = ..\..\Downloads\Directory.Build.props
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApp", "WebApp\WebApp.csproj", "{4A8DDA4D-F68F-4137-92F3-6D43E750CD23}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,5 +49,9 @@ Global
 		{1A7EE8CD-AF08-4DB9-8BF1-047FC62435A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A7EE8CD-AF08-4DB9-8BF1-047FC62435A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A7EE8CD-AF08-4DB9-8BF1-047FC62435A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A8DDA4D-F68F-4137-92F3-6D43E750CD23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A8DDA4D-F68F-4137-92F3-6D43E750CD23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A8DDA4D-F68F-4137-92F3-6D43E750CD23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A8DDA4D-F68F-4137-92F3-6D43E750CD23}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

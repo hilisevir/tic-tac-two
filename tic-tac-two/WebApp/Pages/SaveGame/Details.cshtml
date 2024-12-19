@@ -1,0 +1,121 @@
+@page
+@model DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>SaveGame</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SaveGame.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SaveGame.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SaveGame.GameBoard)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SaveGame.GameBoard)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SaveGame.GamePassword)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SaveGame.GamePassword)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SaveGame.NextMoveBy)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SaveGame.NextMoveBy)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SaveGame.Player1PieceAmount)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SaveGame.Player1PieceAmount)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SaveGame.Player2PieceAmount)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SaveGame.Player2PieceAmount)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SaveGame.SlidingGrid.GridHeight)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SaveGame.SlidingGrid.GridHeight)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SaveGame.SlidingGrid.GridWidth)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SaveGame.SlidingGrid.GridWidth)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SaveGame.SlidingGrid.GridCenterX)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SaveGame.SlidingGrid.GridCenterX)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SaveGame.SlidingGrid.GridCenterY)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SaveGame.SlidingGrid.GridCenterY)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SaveGame.SlidingGrid.StartRow)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SaveGame.SlidingGrid.StartRow)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SaveGame.SlidingGrid.EndRow)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SaveGame.SlidingGrid.EndRow)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SaveGame.SlidingGrid.StartCol)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SaveGame.SlidingGrid.StartCol)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SaveGame.SlidingGrid.EndCol)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SaveGame.SlidingGrid.EndCol)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SaveGame.MadeMoves)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SaveGame.MadeMoves)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SaveGame.GameType)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SaveGame.GameType)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SaveGame.GameConfiguration)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SaveGame.GameConfiguration.Name)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.SaveGame.Id" asp-route-UserName="@ViewData["UserName"]">Edit</a> |
+    <a asp-page="./Index" asp-route-UserName="@ViewData["UserName"]">Back to List</a>
+</div>

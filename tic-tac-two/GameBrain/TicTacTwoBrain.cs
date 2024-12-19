@@ -2,47 +2,47 @@
 
 public class TicTacTwoBrain
 {
-    private readonly GameState _gameState;
+    public readonly GameState GameState;
     
+    // Constructor for saved game
     public TicTacTwoBrain(GameState gameState, SlidingGrid slidingGrid)
     {
-        _gameState = new GameState(gameState.GameBoard, gameState.GameConfiguration, slidingGrid);
+        GameState = new GameState(gameState.GameBoard, gameState.GameConfiguration, slidingGrid, gameState.MadeMoves,
+            gameState.GamePassword, gameState.NextMoveBy, gameState.Id, gameState.GameType, gameState.Player1PieceAmount,
+            gameState.Player2PieceAmount, gameState.Name);
     }
     
+    // Constructor for new game
     public TicTacTwoBrain(GameConfiguration gameConfiguration, SlidingGrid slidingGrid)
     {
-        var gameBoard = new EGamePiece[gameConfiguration.BoardSizeWidth][];
+        var gameBoard = new EGamePiece[gameConfiguration.BoardWidth][];
         for (var x = 0; x < gameBoard.Length; x++)
         {
-            gameBoard[x] = new EGamePiece[gameConfiguration.BoardSizeHeight];
+            gameBoard[x] = new EGamePiece[gameConfiguration.BoardHeight];
         }
-        _gameState = new GameState(
+        GameState = new GameState(
             gameBoard,
-            gameConfiguration, 
+            gameConfiguration,
             slidingGrid);
     }
-    
-    public EGamePiece[][] GameBoard
-    {
-        get => GetBoard();
-        private set => _gameState.GameBoard = value;
-    }
-    
-    public int DimX => _gameState.GameBoard.Length;
-    public int DimY => _gameState.GameBoard[0].Length;
-    public List<EGamePiece>? Player1Pieces => _gameState.GameConfiguration.Player1Pieces;
-    public List<EGamePiece>? Player2Pieces => _gameState.GameConfiguration.Player2Pieces;
-    
+
+    public EGamePiece[][] GameBoard => GetBoard();
+
+    public int DimX => GameState.GameBoard.Length;
+    public int DimY => GameState.GameBoard[0].Length;
+
+    private int Player1Pieces => GameState.Player1PieceAmount;
+    private int Player2Pieces => GameState.Player2PieceAmount;
+
     private EGamePiece[][] GetBoard()
     {
-        var copyOffBoard = new EGamePiece[_gameState.GameBoard.GetLength(0)][];
-            // , _gameState.GameBoard.GetLength(1)];
-        for (var x = 0; x < _gameState.GameBoard.Length; x++)
+        var copyOffBoard = new EGamePiece[GameState.GameBoard.GetLength(0)][];
+        for (var x = 0; x < GameState.GameBoard.Length; x++)
         {
-            copyOffBoard[x] = new EGamePiece[_gameState.GameBoard[x].Length];
-            for (var y = 0; y < _gameState.GameBoard[x].Length; y++)
+            copyOffBoard[x] = new EGamePiece[GameState.GameBoard[x].Length];
+            for (var y = 0; y < GameState.GameBoard[x].Length; y++)
             {
-                copyOffBoard[x][y] = _gameState.GameBoard[x][y];
+                copyOffBoard[x][y] = GameState.GameBoard[x][y];
             }
         }
         return copyOffBoard;
@@ -50,172 +50,121 @@ public class TicTacTwoBrain
 
     public GameState GetGameState(string gameName)
     {
-        _gameState.Name = gameName;
-        return _gameState;
+        GameState.Name = gameName;
+        return GameState;
     }
 
-    public string GetGameConfigName()
+    public EGamePiece? CheckWinCondition(EGamePiece pieceToCheck)
     {
-        return _gameState.GameConfiguration.Name;
-    }
-    
-   public bool CheckWinCondition(EGamePiece gamePiece)
-{
-    int count;
-    // Check horizontal
-    for (int y = _gameState.SlidingGrid.StartCol; y < _gameState.SlidingGrid.EndCol + 1; y++)
-    {
-        count = 0;
-        for (int x = _gameState.SlidingGrid.StartRow; x < _gameState.SlidingGrid.EndRow + 1; x++)
+        for (var r = 0; r < 2; r++)
         {
-            if (_gameState.GameBoard[x][y] == gamePiece)
+            int count;
+            // Check horizontal
+            for (var y = GameState.SlidingGrid.StartCol; y < GameState.SlidingGrid.EndCol + 1; y++)
             {
-                count++;
-                if (count >= _gameState.GameConfiguration.WinCondition)
+                count = 0;
+                for (var x = GameState.SlidingGrid.StartRow; x < GameState.SlidingGrid.EndRow + 1; x++)
                 {
-                    return true; // Win found
+                    if (GameState.GameBoard[x][y] != pieceToCheck) continue;
+                    count++;
+                    if (count < GameState.GameConfiguration.WinCondition) continue;
+                    Console.WriteLine("Win Found!");
+                    return pieceToCheck;
                 }
             }
-            else
-            {
-                count = 0; // Reset count if the sequence breaks
-            }
-        }
-    }
 
-    // Check vertical
-    for (int x = _gameState.SlidingGrid.StartRow; x < _gameState.SlidingGrid.EndRow + 1; x++)
-    {
-        count = 0;
-        for (int y = _gameState.SlidingGrid.StartCol; y < _gameState.SlidingGrid.EndCol + 1; y++)
-        {
-            if (_gameState.GameBoard[x][y] == gamePiece)
+            // Check vertical
+            for (var x = GameState.SlidingGrid.StartRow; x < GameState.SlidingGrid.EndRow + 1; x++)
             {
-                count++;
-                if (count >= _gameState.GameConfiguration.WinCondition)
+                count = 0;
+                for (var y = GameState.SlidingGrid.StartCol; y < GameState.SlidingGrid.EndCol + 1; y++)
                 {
-                    return true; // Win found
+                    if (GameState.GameBoard[x][y] != pieceToCheck) continue;
+                    count++;
+                    if (count < GameState.GameConfiguration.WinCondition) continue;
+                    Console.WriteLine("Win Found!");
+                    return pieceToCheck;
                 }
             }
-            else
+            count = 0;
+
+            
+            for (var i = 0; i < GameState.GameConfiguration.WinCondition; i++)
             {
-                count = 0; // Reset count if the sequence breaks
+                if (GameState.GameBoard[GameState.SlidingGrid.StartRow + i][GameState.SlidingGrid.StartCol + i] != pieceToCheck) continue;
+                count++;
+                if (count < GameState.GameConfiguration.WinCondition) continue;
+                Console.WriteLine("Win Found!");
+                return pieceToCheck;
+            }
+            count = 0;
+            
+            for (var i = 0; i < GameState.GameConfiguration.WinCondition; i++)
+            {
+                if (GameState.GameBoard[GameState.SlidingGrid.EndRow - i][GameState.SlidingGrid.StartCol + i] != pieceToCheck) continue;
+                count++;
+                Console.WriteLine(count);
+                if (count < GameState.GameConfiguration.WinCondition) continue;
+                Console.WriteLine("Win Found!");
+                return pieceToCheck;
             }
         }
-    }
-    count = 0;
 
-    
-    for (int i = 0; i < _gameState.GameConfiguration.WinCondition; i++)
-    {
-        if (_gameState.GameBoard[_gameState.SlidingGrid.StartRow + i][_gameState.SlidingGrid.StartCol + i] != gamePiece) continue;
-        count++;
-        if (count >= _gameState.GameConfiguration.WinCondition)
-        {
-            return true; // Win found
-        }
-    }
-    count = 0;
-    
-    for (int i = 0; i < _gameState.GameConfiguration.WinCondition; i++)
-    {
-        if (_gameState.GameBoard[_gameState.SlidingGrid.EndRow - i][_gameState.SlidingGrid.StartCol + i] != gamePiece) continue;
-        count++;
-        Console.WriteLine(count);
-        if (count >= _gameState.GameConfiguration.WinCondition)
-        {
-            return true; // Win found
-        }
-    }
-
-    return false; // No win found
+        return null; // No win found
     }
     // Allow users place one of the pieces that still in their hand
-    public void MakeAMove(string coordinates)
+    public void MakeAMove(int x, int y)
     {
-        switch (_gameState.NextMoveBy)
+        switch (GameState.NextMoveBy)
         {
-            case EGamePiece.X when Player1Pieces.Count == 0:
-                ThrowError("Player X has no pieces left to place.");
-                return;
-            case EGamePiece.O when Player2Pieces.Count == 0:
-                ThrowError("Player O has no pieces left to place.");
-                return;
+            case EGamePiece.X when Player1Pieces == 0:
+                throw new ApplicationException("Player X has no pieces left to place.");
+            case EGamePiece.O when Player2Pieces == 0:
+                throw new ApplicationException("Player O has no pieces left to place.");
         }
-        var coordinateSplit = coordinates.Split(',');
         
-        if (!CheckCoordinates(coordinateSplit)) return;
-        
-        var inputX = int.Parse(coordinateSplit[0]);
-        var inputY = int.Parse(coordinateSplit[1]);
-
         try
         {
-            if (_gameState.GameBoard[inputX][inputY] != EGamePiece.Empty)
+            if (GameState.GameBoard[x][y] != EGamePiece.Empty)
             {
-                ThrowError("This place is already occupied. Choose another one.");
-                return;
+                throw new ApplicationException("This place is already occupied. Choose another one.");
             }
         }
-
         catch (IndexOutOfRangeException)
         {
-            ThrowError("Piece were placed out of border bounds. Please try again.");
-            return;
+            throw new IndexOutOfRangeException("Piece were placed out of border bounds. Please try again.");
         }
-        _gameState.GameBoard[inputX][inputY] = _gameState.NextMoveBy;
+        GameState.GameBoard[x][y] = GameState.NextMoveBy;
         SubtractPieces();
-
-        if (CheckWinCondition(_gameState.NextMoveBy))
-        {
-            Console.Clear();
-            Console.WriteLine($"Congratulations {_gameState.NextMoveBy}! You won!");
-        }
         
         // flip the next piece
-        _gameState.NextMoveBy = _gameState.NextMoveBy == EGamePiece.X ? EGamePiece.O : EGamePiece.X;
+        GameState.NextMoveBy = GameState.NextMoveBy == EGamePiece.X ? EGamePiece.O : EGamePiece.X;
+        GameState.MadeMoves--;
         
     }
     
     // Allows user in the beginning of the game place the grid on any location of the board
-    public void PlaceAGrid(SlidingGrid gridInstance)
-    {
-        do
-        {
-            Console.Write("Choose initial grid position by providing coordinates <x,y>:");
-            var gridPosition = Console.ReadLine()!;
-            var coordinatesGrid = gridPosition.Split(',');
+    public bool PlaceAGrid(SlidingGrid gridInstance, int x=-1, int y=-1)
+    { 
+        GameState.SlidingGrid.GridCenterX = x;
+        GameState.SlidingGrid.GridCenterY = y;
 
-            if (!CheckCoordinates(coordinatesGrid)) continue;
+        gridInstance.GetGridBounds();
 
-            gridInstance.GetGridBounds();
-
-            _gameState.SlidingGrid.GridCenterX = int.Parse(coordinatesGrid[0]);
-            _gameState.SlidingGrid.GridCenterY = int.Parse(coordinatesGrid[1]);
-
-            gridInstance.GetGridBounds();
-
-            if (!(_gameState.SlidingGrid.StartRow >= 0 &&
-                  _gameState.SlidingGrid.EndRow <= _gameState.GameConfiguration.BoardSizeWidth - 1 &&
-                  _gameState.SlidingGrid.StartCol >= 0 && _gameState.SlidingGrid.EndRow <=
-                  _gameState.GameConfiguration.BoardSizeHeight - 1))
-            {
-                ThrowError("Invalid coordinates. Grid is out if board bounds!");
-                continue;
-            }
-            return;
-        } while (true);
-
+        return GameState.SlidingGrid.StartRow >= 0 &&
+               GameState.SlidingGrid.EndRow <= GameState.GameConfiguration.BoardWidth - 1 &&
+               GameState.SlidingGrid.StartCol >= 0 && GameState.SlidingGrid.EndRow <=
+               GameState.GameConfiguration.BoardHeight - 1;
     }
     private void SubtractPieces()
     {
-        if (_gameState.NextMoveBy == EGamePiece.X)
+        if (GameState.NextMoveBy == EGamePiece.X)
         {
-            Player1Pieces.Remove(EGamePiece.X);
+            GameState.Player1PieceAmount--;
         }
         else
         {
-            Player2Pieces.Remove(EGamePiece.O);
+            GameState.Player2PieceAmount--;
         }
     }
 
@@ -224,143 +173,103 @@ public class TicTacTwoBrain
     {
         if (!CheckMoveCommand(userInput))
         {
-            ThrowError($"Invalid command: '{userInput}'. Please try again.");
-            return;
+            throw new ApplicationException($"Invalid command: '{userInput}'. Please try again.");
         }
         try
         {
             switch (userInput.ToUpper())
             {
                 case ("R"):
-                    _gameState.SlidingGrid.MoveRight();
+                    GameState.SlidingGrid.MoveRight();
                     break;
                 case ("L"):
-                    _gameState.SlidingGrid.MoveLeft();
+                    GameState.SlidingGrid.MoveLeft();
                     break;
                 case ("U"):
-                    _gameState.SlidingGrid.MoveUp();
+                    GameState.SlidingGrid.MoveUp();
                     break;
                 case ("D"):
-                    _gameState.SlidingGrid.MoveDown();
+                    GameState.SlidingGrid.MoveDown();
                     break;
                 case ("UR"):
-                    _gameState.SlidingGrid.MoveUpRight();
+                    GameState.SlidingGrid.MoveUpRight();
                     break;
                 case ("UL"):
-                    _gameState.SlidingGrid.MoveUpLeft();
+                    GameState.SlidingGrid.MoveUpLeft();
                     break;
                 case ("DR"):
-                    _gameState.SlidingGrid.MoveDownRight();
+                    GameState.SlidingGrid.MoveDownRight();
                     break;
                 case ("DL"):
-                    _gameState.SlidingGrid.MoveDownLeft();
+                    GameState.SlidingGrid.MoveDownLeft();
                     break;
             }
         }
         catch (IndexOutOfRangeException e)
         {
-            Console.WriteLine(e.Message);
+            throw new ApplicationException(e.Message);
         }
-        if (CheckWinCondition(_gameState.NextMoveBy))
-        {
-            Console.Clear();
-            Console.WriteLine($"Congratulations {_gameState.NextMoveBy}! You won!");
-        }
-        _gameState.NextMoveBy = _gameState.NextMoveBy == EGamePiece.X ? EGamePiece.O : EGamePiece.X;
+        
+        GameState.NextMoveBy = GameState.NextMoveBy == EGamePiece.X ? EGamePiece.O : EGamePiece.X;
     }
     
     
     // Allows user to change position of already placed piece
-    public void ChangePiecePosition(string userInput)
-    { 
-        var pieceCor = userInput.Split(',');
-        
-        if(!CheckIfPieceInGrid(pieceCor));
-        
-        var inputX = int.Parse(pieceCor[0]);
-        var inputY = int.Parse(pieceCor[1]);
+    public void ChangePiecePosition(int newX, int newY, int oldX, int oldY)
+    {
         EGamePiece pieceToMove;
 
-        if (_gameState.GameBoard[inputX][inputY] == _gameState.NextMoveBy)
+        if (GameState.GameBoard[oldX][oldY] == GameState.NextMoveBy)
         {
-            pieceToMove = _gameState.GameBoard[inputX][inputY];
+            pieceToMove = GameState.GameBoard[oldX][oldY];
         }else
         {
-            ThrowError($"You can move only your pieces that are in the grid! Your chose was: {_gameState.GameBoard[inputX][inputY]}");
-            return;
+            throw new ApplicationException($"You can move only your pieces that are in the grid! Your chose was: {GameState.GameBoard[oldX][oldY]}");
         }
         
-        Console.Write("Enter new position <x,y> for the piece you want to move: ");
-        var newPos = Console.ReadLine();
-        pieceCor = newPos.Split(',');
-        
-        if(!CheckIfPieceInGrid(pieceCor)) return;
-        
-        var inputNewX = int.Parse(pieceCor[0]);
-        var inputNewY = int.Parse(pieceCor[1]);
-        
-        if (_gameState.GameBoard[inputNewX][inputNewY] != EGamePiece.Empty)
+        if (GameState.GameBoard[newX][newY] != EGamePiece.Empty)
         {
-            ThrowError($"You can place a piece only on empty cells. Your chose was: {_gameState.GameBoard[inputNewX][inputNewY]}");
-            return;
+            throw new ApplicationException($"You can place a piece only on empty cells. Your chose was: {GameState.GameBoard[newX][newY]}");
         }
         
         
-        _gameState.GameBoard[inputX][inputY] = EGamePiece.Empty;
-        _gameState.GameBoard[inputNewX][inputNewY] = pieceToMove;
+        GameState.GameBoard[oldX][oldY] = EGamePiece.Empty;
+        GameState.GameBoard[newX][newY] = pieceToMove;
         
-        if (CheckWinCondition(_gameState.NextMoveBy))
-        {
-            Console.Clear();
-            Console.WriteLine($"Congratulations {_gameState.NextMoveBy}! You won!");
-        }
-        
-        _gameState.NextMoveBy = _gameState.NextMoveBy == EGamePiece.X ? EGamePiece.O : EGamePiece.X;
+        GameState.NextMoveBy = GameState.NextMoveBy == EGamePiece.X ? EGamePiece.O : EGamePiece.X;
     }
     
-    // Reset game
-    public void ResetGame()
-    {
-        var copyOffBoard = new EGamePiece[_gameState.GameBoard.GetLength(0), _gameState.GameBoard.GetLength(1)];
-        _gameState.NextMoveBy = EGamePiece.X;
-        
-    }
     
     // Check if user provided the valid coordinates 
-    private bool CheckCoordinates(string[] coordinates)
+    public bool CheckCoordinates(string[] coordinates)
     {
-        if (coordinates.Length != 2 || !int.TryParse(coordinates[0], out var x)
-                                    || !int.TryParse(coordinates[1], out var y))
-        {
-            ThrowError($"Invalid input: '{string.Join(',', coordinates)}'. Please try again. " +
-                       $"Coordinates should be in format x,y");
-            return false;
-        }
-        return true;
+        if (coordinates.Length == 2 && int.TryParse(coordinates[0], out var x)
+                                    && int.TryParse(coordinates[1], out var y)) return true;
+         throw new ApplicationException($"Invalid input: '{string.Join(',', coordinates)}'. Please try again. " +
+                                        $"Coordinates should be in format x,y");
     }
     
     // Check if piece inside the grid
-    private bool CheckIfPieceInGrid(string[] coordinates)
+    public void CheckIfPieceInGrid(string[] coordinates)
     {
-        if(!CheckCoordinates(coordinates)) return false;
+        if(!CheckCoordinates(coordinates)) return;
         
         var inputX = int.Parse(coordinates[0]);
         var inputY = int.Parse(coordinates[1]);
 
-        if (_gameState.SlidingGrid.StartRow <= inputX && _gameState.SlidingGrid.EndRow >= inputX
-                                                      && _gameState.SlidingGrid.StartCol <= inputY && _gameState.SlidingGrid.EndCol >= inputY)
+        if (!(GameState.SlidingGrid.StartRow <= inputX
+              && GameState.SlidingGrid.EndRow >= inputX
+              && GameState.SlidingGrid.StartCol <= inputY
+              && GameState.SlidingGrid.EndCol >= inputY))
         {
-            return true;
+            throw new ApplicationException($"Invalid input: '{string.Join(',', coordinates)}'. Please try again. " +
+                                           $"You can't take or place a piece out of bounds of the grid.");
         }
         
-        ThrowError($"Invalid input: '{string.Join(',', coordinates)}'. Please try again. " +
-                   $"You can't take or place a piece out of bounds of the grid.");
-        
-        return false;
     }
     
     // Check if move command is valid
-    private bool CheckMoveCommand(string? command)
+    private static bool CheckMoveCommand(string? command)
     {
         if (command == null) return false;
         
@@ -368,15 +277,5 @@ public class TicTacTwoBrain
         
         return commands.Contains(command.ToUpper());
 
-    }
-    
-    // Method for standard error
-    private static void ThrowError(string message)
-    {
-        Console.WriteLine();
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine(message);
-        Console.WriteLine();
-        Console.ResetColor();
     }
 }

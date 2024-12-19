@@ -1,6 +1,6 @@
 ﻿using DAL;
+using Domain;
 using GameBrain;
-using MenuSystem;
 
 namespace ConsoleApp;
 
@@ -8,44 +8,47 @@ public static class GameControllerNewGame
 {
     public static string MainLoop()
     {
-        var chosenConfigShortcut = ChooseConfiguration();
+        var chosenConfigShortcut = GameControllerHelper.ChooseConfiguration();
 
         if (!int.TryParse(chosenConfigShortcut, out var configNo))
         {
             return chosenConfigShortcut;
         }
     
-        var chosenConfig = RepositoryHelper.ConfigRepository.GetConfigurationByName(
-            RepositoryHelper.ConfigRepository.GetConfigurationNames()[configNo]
-        );
+        var chosenConfig = RepositoryHelper.ConfigRepository.GetGameConfigurationById(configNo);
+
+        
+        var chosenGameTypeShortcut = GameControllerHelper.ChooseGameType();
+        
+        if (!int.TryParse(chosenGameTypeShortcut, out var configNum))
+        {
+            return chosenGameTypeShortcut;
+        }
+    
+        var chosenGameType = RepositoryHelper.GameTypeRepository.GetGameTypeById(configNum);
         
         var gridConstruct = new SlidingGrid(chosenConfig);
         var gameInstance = new TicTacTwoBrain(chosenConfig, gridConstruct);
         
-        gameInstance.PlaceAGrid(gridConstruct);
+        gameInstance.GameState.GameType = chosenGameType.Id;
+
+        do
+        {
+            Console.Write("Choose initial grid position by providing coordinates <x,y>:");
+            var gridPosition = Console.ReadLine()!;
+            var coordinatesGrid = gridPosition.Split(',');
+            if (!gameInstance.CheckCoordinates(coordinatesGrid)) continue;
+            var x = int.Parse(coordinatesGrid[0]);
+            var y = int.Parse(coordinatesGrid[1]);
+
+            if (!gameInstance.PlaceAGrid(gridConstruct, x, y)) continue;
+            
+            break;
+            
+        } while (true);
+        
         GameController.GameLoop(gridConstruct, gameInstance);
+        
         return "Game Finished!";
     }
-    
-    private static string ChooseConfiguration()
-    {
-        var configMenuItems = new List<MenuItem>();
-        for (var i = 0; i < RepositoryHelper.ConfigRepository.GetConfigurationNames().Count; i++)
-        {
-            var returnValue = i.ToString();
-            configMenuItems.Add(new MenuItem()
-            {
-                Title = RepositoryHelper.ConfigRepository.GetConfigurationNames()[i],
-                Shortcut = (i + 1).ToString(),
-                MenuItemAction = () => returnValue
-            });
-        }
-    
-        var configMenu = new Menu(EMenuLevel.Secondary, "TIC-TAC-TWO Game Config", 
-            configMenuItems, 
-            isCustomMenu: true);
-
-        return configMenu.Run();
-    }
-    
 }

@@ -17,14 +17,11 @@ public class Configuration : BaseEntity
     
     public int MovePieceAfterNMoves { get; set; }
     
-    public string Player1Pieces { get; set; }
-    public string Player2Pieces { get; set; }
+    public int Player1PieceAmount { get; set; }
+    public int Player2PieceAmount { get; set; }
     
-    
-    public ICollection<SaveGame>? SaveGames { get; set; }
     
     public override string ToString() => Name + $"(Board size: {BoardWidth}x{BoardHeight}, " +
                                          $"grid size: {GridWidth}x{GridHeight}, to win: {WinCondition}, " +
-                                         $"can move pieces after: {MovePieceAfterNMoves})" +
-                                         $"({SaveGames?.Count.ToString() ?? "not joined"})";
+                                         $"can move pieces after: {MovePieceAfterNMoves})";
 }

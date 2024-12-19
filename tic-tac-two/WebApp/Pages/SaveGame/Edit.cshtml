@@ -1,0 +1,144 @@
+@page
+@model WebApp.Pages_SaveGame.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>SaveGame</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                
+                <label asp-for="SaveGame.Name" class="control-label"></label>
+                <input asp-for="SaveGame.Name" class="form-control" />
+                <span asp-validation-for="SaveGame.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                
+                <label asp-for="SaveGame.GameBoard" class="control-label"></label>
+                <input asp-for="SaveGame.GameBoard" class="form-control" />
+                <span asp-validation-for="SaveGame.GameBoard" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                
+                <label asp-for="SaveGame.GamePassword" class="control-label"></label>
+                <input asp-for="SaveGame.GamePassword" class="form-control" />
+                <span asp-validation-for="SaveGame.GamePassword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                
+                <label asp-for="SaveGame.NextMoveBy" class="control-label"></label>
+                <select asp-for="SaveGame.NextMoveBy" class="form-control"></select>
+                <span asp-validation-for="SaveGame.NextMoveBy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                
+                <label asp-for="SaveGame.Player1PieceAmount" class="control-label"></label>
+                <input asp-for="SaveGame.Player1PieceAmount" class="form-control" />
+                <span asp-validation-for="SaveGame.Player1PieceAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                
+                <label asp-for="SaveGame.Player2PieceAmount" class="control-label"></label>
+                <input asp-for="SaveGame.Player2PieceAmount" class="form-control" />
+                <span asp-validation-for="SaveGame.Player2PieceAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                
+                <label asp-for="SaveGame.GridHeight" class="control-label"></label>
+                <input asp-for="SaveGame.GridHeight" class="form-control" />
+                <span asp-validation-for="SaveGame.GridHeight" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                
+                <label asp-for="SaveGame.GridWidth" class="control-label"></label>
+                <input asp-for="SaveGame.GridWidth" class="form-control" />
+                <span asp-validation-for="SaveGame.GridWidth" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                
+                <label asp-for="SaveGame.GridCenterX" class="control-label"></label>
+                <input asp-for="SaveGame.GridCenterX" class="form-control" />
+                <span asp-validation-for="SaveGame.GridCenterX" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                
+                <label asp-for="SaveGame.GridCenterY" class="control-label"></label>
+                <input asp-for="SaveGame.GridCenterY" class="form-control" />
+                <span asp-validation-for="SaveGame.GridCenterY" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                
+                <label asp-for="SaveGame.StartRow" class="control-label"></label>
+                <input asp-for="SaveGame.StartRow" class="form-control" />
+                <span asp-validation-for="SaveGame.StartRow" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                
+                <label asp-for="SaveGame.EndRow" class="control-label"></label>
+                <input asp-for="SaveGame.EndRow" class="form-control" />
+                <span asp-validation-for="SaveGame.EndRow" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                
+                <label asp-for="SaveGame.StartColumn" class="control-label"></label>
+                <input asp-for="SaveGame.StartColumn" class="form-control" />
+                <span asp-validation-for="SaveGame.StartColumn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                
+                <label asp-for="SaveGame.EndColumn" class="control-label"></label>
+                <input asp-for="SaveGame.EndColumn" class="form-control" />
+                <span asp-validation-for="SaveGame.EndColumn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                
+                <label asp-for="SaveGame.MadeMoves" class="control-label"></label>
+                <input asp-for="SaveGame.MadeMoves" class="form-control" />
+                <span asp-validation-for="SaveGame.MadeMoves" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                
+                <label asp-for="SaveGame.ConfigurationId" class="control-label"></label>
+                <select asp-for="SaveGame.ConfigurationId" class="form-control" asp-items="ViewBag.ConfigurationId"></select>
+                <span asp-validation-for="SaveGame.ConfigurationId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                
+                <label asp-for="SaveGame.GameTypeId" class="control-label"></label>
+                <input asp-for="SaveGame.GameTypeId" class="form-control" />
+                <span asp-validation-for="SaveGame.GameTypeId" class="text-danger"></span>
+            </div>
+            <input type="hidden" asp-for="SaveGame.Id" />
+            <div class="form-group">
+                
+                <label asp-for="SaveGame.CreatedAt" class="control-label"></label>
+                <input asp-for="SaveGame.CreatedAt" class="form-control" />
+                <span asp-validation-for="SaveGame.CreatedAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                
+                <label asp-for="SaveGame.ModifiedAt" class="control-label"></label>
+                <input asp-for="SaveGame.ModifiedAt" class="form-control" />
+                <span asp-validation-for="SaveGame.ModifiedAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index" asp-route-UserName="@ViewData["UserName"]">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
