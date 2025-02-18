@@ -16,21 +16,9 @@ public static class GameControllerNewGame
         }
     
         var chosenConfig = RepositoryHelper.ConfigRepository.GetGameConfigurationById(configNo);
-
-        
-        var chosenGameTypeShortcut = GameControllerHelper.ChooseGameType();
-        
-        if (!int.TryParse(chosenGameTypeShortcut, out var configNum))
-        {
-            return chosenGameTypeShortcut;
-        }
-    
-        var chosenGameType = RepositoryHelper.GameTypeRepository.GetGameTypeById(configNum);
         
         var gridConstruct = new SlidingGrid(chosenConfig);
         var gameInstance = new TicTacTwoBrain(chosenConfig, gridConstruct);
-        
-        gameInstance.GameState.GameType = chosenGameType.Id;
 
         do
         {

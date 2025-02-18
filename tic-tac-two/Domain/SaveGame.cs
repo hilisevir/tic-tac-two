@@ -27,7 +27,6 @@ public class SaveGame : BaseEntity
     
     // Expose the Foreign Key
     public int ConfigurationId { get; set; }
-    public int GameTypeId { get; set; }
     public Configuration? Configuration { get; set; }
     
 }

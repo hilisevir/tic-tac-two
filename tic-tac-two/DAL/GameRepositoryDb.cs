@@ -35,7 +35,6 @@ public class GameRepositoryDb(AppDbContext context) : IGameRepository
             existingGame.GamePassword = gameState.GamePassword;
             existingGame.MadeMoves = gameState.MadeMoves;
             existingGame.ConfigurationId = gameState.GameConfiguration.Id;
-            existingGame.GameTypeId = gameState.GameType;
             
             context.SaveChanges();
         }
@@ -59,7 +58,6 @@ public class GameRepositoryDb(AppDbContext context) : IGameRepository
                 GamePassword = gameState.GamePassword,
                 MadeMoves = gameState.MadeMoves,
                 ConfigurationId = gameState.GameConfiguration.Id,
-                GameTypeId = gameState.GameType
             };
             
             context.SaveGames.Add(saveGame);
@@ -96,7 +94,7 @@ public class GameRepositoryDb(AppDbContext context) : IGameRepository
         };
         
         var gameState = new GameState(gameBoard!, gameConfiguration, slidingGrid, game.MadeMoves, game.GamePassword, game.NextMoveBy,
-            game.Id, game.GameTypeId, game.Player1PieceAmount, game.Player2PieceAmount)
+            game.Id, game.Player1PieceAmount, game.Player2PieceAmount)
         {
             Name = game.Name
         };

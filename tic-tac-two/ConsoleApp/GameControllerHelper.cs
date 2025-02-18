@@ -55,27 +55,4 @@ public static class GameControllerHelper
 
         return configMenu.Run();
     }
-
-    public static string ChooseGameType()
-    {
-        var typesMenuItems = new List<MenuItem>();
-        var typesDict =  RepositoryHelper.GameTypeRepository.GetGameTypeNames();
-        
-        for (var i = 0; i < typesDict.Count; i++)
-        {
-            var keyIndex = i;
-            typesMenuItems.Add(new MenuItem()
-            {
-                Title = typesDict[typesDict.Keys.ElementAt(i)],
-                Shortcut = (i + 1).ToString(),
-                MenuItemAction = () => typesDict.Keys.ElementAt(keyIndex).ToString()
-            });
-        }
-        
-        var typesMenu = new Menu(EMenuLevel.Secondary, "TIC-TAC-TWO Game Types", 
-            typesMenuItems, 
-            isCustomMenu: true);
-
-        return typesMenu.Run();
-    }
 }

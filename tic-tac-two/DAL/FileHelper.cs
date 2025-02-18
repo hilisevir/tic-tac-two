@@ -8,7 +8,6 @@ public static class FileHelper
 
     public const string ConfigExtension = ".config.json";
     public const string GameExtension = ".game.json";
-    public const string GameTypeExtension = ".gametype.json";
     
 
     public static readonly string ConfigIdCounterFile = BasePath + "id_counter_config.txt";

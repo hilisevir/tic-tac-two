@@ -8,7 +8,7 @@ public class TicTacTwoBrain
     public TicTacTwoBrain(GameState gameState, SlidingGrid slidingGrid)
     {
         GameState = new GameState(gameState.GameBoard, gameState.GameConfiguration, slidingGrid, gameState.MadeMoves,
-            gameState.GamePassword, gameState.NextMoveBy, gameState.Id, gameState.GameType, gameState.Player1PieceAmount,
+            gameState.GamePassword, gameState.NextMoveBy, gameState.Id, gameState.Player1PieceAmount,
             gameState.Player2PieceAmount, gameState.Name);
     }
     

@@ -5,16 +5,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WebApp.Pages;
-public class NewGame(IConfigRepository configRepository, IGameTypeRepository gameTypeRepository, IGameRepository gameRepository)
+public class NewGame(IConfigRepository configRepository, IGameRepository gameRepository)
     : PageModel
 {
     [BindProperty(SupportsGet = true)]
     public string UserName { get; set; } = default!;
     public SelectList ConfigSelectList { get; set; } = default!;
-    public SelectList GameTypeList { get; set; } = default!;
-    
-    [BindProperty]
-    public int GameTypeId { get; set; }
     
     [BindProperty]
     public int ConfigurationId { get; set; }
@@ -34,13 +30,6 @@ public class NewGame(IConfigRepository configRepository, IGameTypeRepository gam
             .ToList();
 
         ConfigSelectList = new SelectList(confSelectListData, "id", "value");
-
-        
-        var typeSelectListData = gameTypeRepository.GetGameTypeNames()
-            .Select(kv => new { id = kv.Key, value = kv.Value })
-            .ToList();
-
-        GameTypeList = new SelectList(typeSelectListData, "id", "value");
         
         return Page();
     }
@@ -48,16 +37,9 @@ public class NewGame(IConfigRepository configRepository, IGameTypeRepository gam
     public IActionResult OnPost()
     {
         var chosenConfig = configRepository.GetGameConfigurationById(ConfigurationId);
-        var chosenGameType = gameTypeRepository.GetGameTypeById(GameTypeId);
         
         var gridConstruct = new SlidingGrid(chosenConfig);
-        var gameInstance = new TicTacTwoBrain(chosenConfig, gridConstruct)
-        {
-            GameState =
-            {
-                GameType = chosenGameType.Id
-            }
-        };
+        var gameInstance = new TicTacTwoBrain(chosenConfig, gridConstruct);
         
         GameName = GameName?.Trim();
         if (string.IsNullOrWhiteSpace(GameName))

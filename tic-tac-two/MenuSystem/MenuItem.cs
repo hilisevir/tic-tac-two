@@ -2,14 +2,14 @@
 
 public class MenuItem
 {
-    private string _title;
-    private string _shortcut;
+    private string? _title;
+    private string? _shortcut;
 
     public Func<string>? MenuItemAction { get; set; }
     
     public string Title
     {
-        get => _title;
+        get => _title!;
         set
         {
             if (string.IsNullOrEmpty(value))
@@ -23,7 +23,7 @@ public class MenuItem
 
     public string Shortcut
     {
-        get => _shortcut;
+        get => _shortcut!;
         set
         {
             if (string.IsNullOrEmpty(value))

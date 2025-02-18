@@ -14,7 +14,6 @@ public class GameState
     public SlidingGrid SlidingGrid { get; set; }
     public int Player1PieceAmount { get; set; }
     public int Player2PieceAmount { get; set; }
-    public int GameType { get; set; }
     public int MadeMoves { get; set; }
     
     
@@ -23,7 +22,7 @@ public class GameState
                     SlidingGrid slidingGrid, int madeMoves = -100,
                     string gamePassword = "", 
                     EGamePiece nextMoveBy = EGamePiece.X, 
-                    int id = -1, int gameType = -1, 
+                    int id = -1, 
                     int player1PieceAmount = -1,
                     int player2PieceAmount = -1,
                     string name = "")
@@ -38,7 +37,6 @@ public class GameState
         Player2PieceAmount = player2PieceAmount > -1 ? player2PieceAmount : gameConfiguration.Player2PieceAmount;
         slidingGrid.GameConfiguration = gameConfiguration;
         MadeMoves = madeMoves > -100 ? madeMoves : gameConfiguration.MovePieceAfterNMoves;
-        GameType = gameType;
         NextMoveBy = nextMoveBy;
     }
     
