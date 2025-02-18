@@ -1,19 +1,24 @@
 # Tic-Tac-Two
 
-Tic-Tac-Two is a university project written in C# that extends the classic Tic-Tac-Toe game with additional mechanics. The game supports both console-based and web-based gameplay and includes a fully functional persistence layer for saving game states and configurations.
+Tic-Tac-Two is a university project written in C# that extends the classic Tic-Tac-Toe game with additional mechanics. The game supports both console-based and web-based gameplay and includes a fully functional persistence layer for saving game states and configurations. The project demonstrates skills in software architecture, database integration, and web development using Razor Pages.
 
 ## Features
 
-- 🎮 **Cross-Platform Gameplay** – Play in the console or in a web-based UI.
-- 💾 **Game State Persistence** – Automatically saves game progress and settings.
-- 🛠 **Pre-Configured Database** – Migrations and database files are already included.
-- 🔄 **Fully Functional Data Layer** – Built with SQLite and Entity Framework Core.
+- 🎮 **Multi-Platform Support** – Play the game in the console or in a web browser.
+- 💾 **Game Persistence** – Save and load games, as well as create and store custom game configurations.
+- 🔄 **Flexible Storage Options** – Choose between saving data in a database (SQLite) or using the file system.
+- 🌐 **Multiplayer Web Mode** – Two players can join the same game from separate browser windows using a password.
+- 🛠 **Built with Razor Pages** – The web interface is designed using ASP.NET Razor Pages.
 
 ## Getting Started
 
+### Prerequisites
+- .NET 9.0 SDK or later
+- A compatible IDE (e.g., Visual Studio, JetBrains Rider, or VS Code)
+
 ### 1. Clone the Repository
 ```sh
-git clone https://github.com/yourusername/tic-tac-two.git
+git clone https://github.com/hilisevir/tic-tac-two.git
 cd tic-tac-two
 ```
 
@@ -32,15 +37,21 @@ dotnet run --project ConsoleApp
 dotnet run --project WebApp
 ```
 
+### Switching the Storage Method
+By default, the game uses an SQLite database for storing game states and configurations. If you prefer to store data in files instead:
+1. Open the `RepositoryHelper` file.
+2. Comment out the lines related to database storage.
+3. Uncomment the lines related to file-based storage.
+4. Rebuild and run the project.
+
 ## Database Setup
 No additional setup is required for the database! 🎉 The necessary migrations and `app.db` file are included in the repository. The game will work out of the box without manual database configuration.
 
 ## Technologies Used
 - **C#** – Primary programming language
-- **.NET** – Application framework
+- **ASP.NET Razor Pages** – Server-side web application model for building dynamic web interfaces
 - **Entity Framework Core** – ORM for database interactions
 - **SQLite** – Lightweight embedded database
-- **ASP.NET Core** – Web application framework
 
 ## Why This Project?
 This project showcases a structured and scalable approach to game development in C#. It demonstrates:
@@ -49,5 +60,5 @@ This project showcases a structured and scalable approach to game development in
 - Proper use of Entity Framework for database management
 - Console and WebApp integration
 
-## Contact
-If you have any questions or want to discuss this project, feel free to reach out via GitHub or LinkedIn.
+## License
+This project is for educational purposes and does not have a formal license. Feel free to modify and experiment with it!
