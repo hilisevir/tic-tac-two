@@ -16,11 +16,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<IGameRepository, GameRepositoryJson>();
 builder.Services.AddScoped<IConfigRepository, ConfigRepositoryJson>();
-builder.Services.AddScoped<IGameTypeRepository, GameTypeRepositoryJson>();
 
 // builder.Services.AddScoped<IConfigRepository, ConfigRepositoryDb>();
 // builder.Services.AddScoped<IGameRepository, GameRepositoryDb>();
-// builder.Services.AddScoped<IGameTypeRepository, GameTypeRepositoryDb>();
 
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();

@@ -63,32 +63,6 @@ namespace DAL.Migrations
                     b.ToTable("Configurations");
                 });
 
-            modelBuilder.Entity("Domain.GameType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(1280)
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("ModifiedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("GameType");
-                });
-
             modelBuilder.Entity("Domain.SaveGame", b =>
                 {
                     b.Property<int>("Id")
@@ -116,9 +90,6 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasMaxLength(1024)
                         .HasColumnType("TEXT");
-
-                    b.Property<int>("GameTypeId")
-                        .HasColumnType("INTEGER");
 
                     b.Property<int>("GridCenterX")
                         .HasColumnType("INTEGER");

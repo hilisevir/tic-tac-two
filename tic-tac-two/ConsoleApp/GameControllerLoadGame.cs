@@ -32,7 +32,6 @@ public static class GameControllerLoadGame
         
         var gameInstance = new TicTacTwoBrain(chosenGame, gridConstruct);
         
-        gameInstance.GameState.GameType = chosenGame.GameType;
         GameController.GameLoop(gridConstruct, gameInstance);
 
         return "Game Finished!";

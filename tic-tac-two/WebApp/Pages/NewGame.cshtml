@@ -17,10 +17,6 @@
                 <select asp-for="ConfigurationId" class ="form-select" asp-items="Model.ConfigSelectList"></select>
             </div>
             <div class="form-group">
-                <label asp-for="GameTypeId" class="control-label">Choose game type</label>
-                <select asp-for="GameTypeId" class ="form-select" asp-items="Model.GameTypeList"></select>
-            </div>
-            <div class="form-group">
                 <label asp-for="GameName" class="control-label">Enter game name</label>
                 <input asp-for="GameName" class="form-control" />
                 <span asp-validation-for="GameName" class="text-danger"></span>
