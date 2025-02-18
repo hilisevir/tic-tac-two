@@ -12,11 +12,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{1A7EE8CD-AF08-4DB9-8BF1-047FC62435A9}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "!Solution Items", "!Solution Items", "{6B8E24A9-E15F-40E8-A337-0D56E2875C3F}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\Downloads\Directory.Build.props = ..\..\Downloads\Directory.Build.props
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApp", "WebApp\WebApp.csproj", "{4A8DDA4D-F68F-4137-92F3-6D43E750CD23}"
 EndProject
 Global

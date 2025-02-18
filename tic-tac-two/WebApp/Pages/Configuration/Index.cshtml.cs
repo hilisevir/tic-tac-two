@@ -1,7 +1,6 @@
 using DAL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using Domain;
 
 namespace WebApp.Pages_Configuration

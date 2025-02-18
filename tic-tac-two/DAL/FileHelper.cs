@@ -2,9 +2,9 @@
 
 public static class FileHelper
 {
-    public static readonly string BasePath = Environment
-                                                 .GetFolderPath(Environment.SpecialFolder.ApplicationData)
-                                             + Path.DirectorySeparatorChar + "tic-tac-two" + Path.DirectorySeparatorChar;
+    public static readonly string BasePath = Path.Combine(
+        Directory.GetParent(AppContext.BaseDirectory)!.Parent!.Parent!.Parent!.Parent!.Parent!.FullName,
+        "data" + Path.DirectorySeparatorChar);
 
     public const string ConfigExtension = ".config.json";
     public const string GameExtension = ".game.json";
